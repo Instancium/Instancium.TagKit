@@ -11,9 +11,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Core\" />
-		<Folder Include="Config\" />
-		<Folder Include="Utils\" />
+	  <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Razor" Version="2.3.0" />
+	  <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.6" />
+	  <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.6" />
 	</ItemGroup>
 
 </Project>
