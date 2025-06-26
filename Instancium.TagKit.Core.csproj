@@ -11,6 +11,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="TestTagHelper\TestTagHelper.css" />
+	  <None Remove="TestTagHelper\TestTagHelper.html" />
+	  <None Remove="TestTagHelper\TestTagHelper.js" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="TestTagHelper\TestTagHelper.css" />
+	  <EmbeddedResource Include="TestTagHelper\TestTagHelper.html" />
+	  <EmbeddedResource Include="TestTagHelper\TestTagHelper.js" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Razor" Version="2.3.0" />
 	  <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.6" />

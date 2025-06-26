@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Test TagHelper</title>
+    <link href="./TestTagHelper.css" rel="stylesheet">
+</head>
+<body>
+    <tag-helper id="hello-card">
+        <div class="hello-card">
+            <h2>@_Welcome_</h2>
+            <p>@_Intro_</p>
+            <div class="time-block">
+                @_Now_ {{CurrentTime}}
+            </div>
+            <button onclick="helloCard.sayHello()">@_ClickMe_</button>
+        </div>
+        <script src="./TestTagHelper.js"></script>
+    </tag-helper>
+</body>
+</html>
+

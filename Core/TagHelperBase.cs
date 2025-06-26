@@ -32,7 +32,16 @@ namespace Instancium.TagKit.Core.Core
         /// Optional language code (e.g., "en", "it") used to override culture detection.
         /// </summary>
         [HtmlAttributeName("lang-code")]
-        public string? LanguageCode { get; set; }
+        public string LanguageCode { get; set; } = "en";
+
+
+        /// <summary>
+        /// Unique HTML element identifier for the tag helper root. This ID is injected into the
+        /// rendered output as the element's DOM `id` and used for instance registration, external
+        /// scripting, and hook resolution (e.g., ComponentHooks[id]).
+        /// </summary>
+        [HtmlAttributeName("element-id")]
+        public string ElementId { get; set; } = $"tag-{Guid.NewGuid():N}";
 
 
         /// <summary>
@@ -55,6 +64,7 @@ namespace Instancium.TagKit.Core.Core
         {
             InitializeCulture(context);
             string html = await RenderHtmlAsync(context, output);
+            output.Attributes.SetAttribute("id", ElementId);
 
             if (!string.IsNullOrWhiteSpace(html))
             {
@@ -68,18 +78,11 @@ namespace Instancium.TagKit.Core.Core
         /// </summary>
         protected virtual void InitializeCulture(TagHelperContext context)
         {
-            if (!string.IsNullOrWhiteSpace(LanguageCode))
-            {
-                CultureInfo.CurrentCulture = new CultureInfo(LanguageCode);
-                CultureInfo.CurrentUICulture = new CultureInfo(LanguageCode);
-            }
-            else
-            {
-                LanguageCode = ResolveLanguageCode(context);
-                var cultureInfo = new CultureInfo(LanguageCode);
-                CultureInfo.CurrentCulture = cultureInfo;
-                CultureInfo.CurrentUICulture = cultureInfo;
-            }
+
+            LanguageCode = ResolveLanguageCode(context);
+            var cultureInfo = new CultureInfo(LanguageCode);
+            CultureInfo.CurrentCulture = cultureInfo;
+            CultureInfo.CurrentUICulture = cultureInfo;
 
             _localizer = _localizerFactory.Create(GetType());
         }
@@ -113,7 +116,11 @@ namespace Instancium.TagKit.Core.Core
         /// </summary>
         protected async Task<string> ReadOwnHtmlAsync()
         {
-            return await TagViewBuilder.ReadFromResourceAsync(GetHtmlResourceOwnerType());
+            var viewBuilder = new TagViewBuilder()
+            {
+                ComponentId = ElementId
+            };
+            return await viewBuilder.ReadFromResourceAsync(GetHtmlResourceOwnerType());
         }
 
         /// <summary>
