@@ -107,57 +107,40 @@ namespace Instancium.TagKit.Core.Utils
             return scoped.ToString();
         }
 
-
-
         /// <summary>
-        /// Embeds the JavaScript logic for a component by replacing the <script src="..."> marker
-        /// with an inline script block sourced from embedded resources. Also appends an
-        /// Instancium-standard hook-invocation snippet for external callback support (onInit).
+        /// Inlines the JavaScript logic for the component by replacing a reference like
+        /// <c>&lt;script src="./Component.js"&gt;&lt;/script&gt;</c> with an inline IIFE (Immediately Invoked Function Expression).
+        /// 
+        /// This allows all component logic to be embedded as part of the final markup,
+        /// making it portable and testable without external dependencies. Lifecycle hooks are
+        /// no longer automatically invoked — the component itself is responsible for exposing and triggering them.
         /// </summary>
-        /// <param name="html">The component's raw HTML markup.</param>
-        /// <param name="baseName">The base name of the component (e.g., TestTagHelper).</param>
-        /// <param name="baseNamespace">The namespace where the embedded resources live.</param>
-        /// <param name="assembly">The assembly containing the embedded JS file.</param>
-        /// <returns>Final HTML with JS logic inlined and hook support appended.</returns>
+        /// <param name="html">Raw component markup loaded from the embedded HTML resource.</param>
+        /// <param name="baseName">Base name of the component (e.g., TestTagHelper).</param>
+        /// <param name="baseNamespace">Root namespace where embedded resources are located.</param>
+        /// <param name="assembly">Assembly containing the embedded JavaScript resource.</param>
+        /// <returns>HTML with inline JavaScript logic injected in place of the external script reference.</returns>
+
         private async Task<string> EmbedJsAsync(string html, string baseName, string baseNamespace, Assembly assembly)
         {
-            // [STEP 1] Look for a placeholder: <script src="./Component.js"></script>
             var pattern = $"<script src=\"./{baseName}.js\"></script>";
 
-            // [STEP 2] If found, replace it with inline JS from the embedded resource
             if (html.Contains(pattern))
             {
-                // Read embedded JS resource
                 string js = await ReadEmbeddedFileAsync(assembly, $"{baseNamespace}.{baseName}.js");
-
-                // Wrap it in a self-contained IIFE for isolation
                 string scriptTag = $"<script>\n(() => {{\n{js}\n}})();\n</script>";
 
-                // Remove original <script src="..."> reference
                 html = html.Replace(pattern, string.Empty);
 
-                // Insert inline JS just before the closing </tag-helper> tag
                 int insertIndex = html.IndexOf("</tag-helper>", StringComparison.OrdinalIgnoreCase);
-                if (insertIndex >= 0)
-                    html = html.Insert(insertIndex, scriptTag + "\n");
-                else
-                    html += "\n" + scriptTag;
+                html = insertIndex >= 0
+                    ? html.Insert(insertIndex, scriptTag + "\n")
+                    : html + "\n" + scriptTag;
             }
-
-            // [STEP 3] Always append hook-invocation support for external onInit() callbacks
-            var hookScript = $@"
-                <script>
-                  window.Instancium = window.Instancium || {{}};
-                  Instancium.ComponentHooks = Instancium.ComponentHooks || {{}};
-                  if (Instancium.ComponentHooks['{ComponentId}']?.onInit) {{
-                    Instancium.ComponentHooks['{ComponentId}'].onInit();
-                  }}
-                </script>";
-
-            html += hookScript;
 
             return html;
         }
+
 
         private string ExtractInnerTagHelperContent(string html)
         {
