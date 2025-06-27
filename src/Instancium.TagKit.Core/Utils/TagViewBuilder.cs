@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Instancium.TagKit.Core.Utils
 {
@@ -47,8 +48,9 @@ namespace Instancium.TagKit.Core.Utils
 
         private async Task<string> EmbedCssAsync(string html, string baseName, string baseNamespace, Assembly assembly)
         {
-            var pattern = $"<link href=\"./{baseName}.css\" rel=\"stylesheet\">";
-            if (!html.Contains(pattern))
+            var pattern = $@"<link\s[^>]*?href\s*=\s*""\.\/{baseName}\.css""[^>]*?>";
+            var regex = new Regex(pattern, RegexOptions.IgnoreCase);
+            if (!regex.IsMatch(html))
                 return html;
 
             string css = await ReadEmbeddedFileAsync(assembly, $"{baseNamespace}.{baseName}.css");
