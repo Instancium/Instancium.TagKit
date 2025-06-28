@@ -147,6 +147,10 @@ namespace Instancium.TagKit.Core.Core
         /// Must be implemented to generate raw HTML content to be localized and rendered.
         /// </summary>
         protected abstract Task<string> RenderHtmlAsync(TagHelperContext context, TagHelperOutput output);
+
+        protected virtual string? GetComponentCss() => null;
+        protected virtual string? GetComponentJs() => null;
+
     }
 }
 

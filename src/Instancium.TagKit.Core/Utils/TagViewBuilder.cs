@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+﻿using Instancium.TagKit.Core.Core;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -16,6 +16,16 @@ namespace Instancium.TagKit.Core.Utils
         /// This maps directly to the tag-helper's rendered HTML 'id' attribute.
         /// </summary>
         public required string ComponentId {get;set;}
+
+        /// <summary>
+        /// Determines whether CSS and JS resources should be linked as external URLs
+        /// (served via the resource controller) instead of being inlined directly into the HTML output.
+        /// 
+        /// When set to <c>true</c>, component styles and scripts will be registered in the runtime
+        /// registry and inserted as references (e.g., <link> / <script src>).
+        /// When <c>false</c>, the assets will be inlined into the markup for self-contained rendering.
+        /// </summary>
+        public bool UseResourceLink { get; set; }
 
         /// <summary>
         /// Reads and composes a view from embedded HTML, CSS, and JS resources based on the tag helper type.
@@ -55,14 +65,19 @@ namespace Instancium.TagKit.Core.Utils
 
             string css = await ReadEmbeddedFileAsync(assembly, $"{baseNamespace}.{baseName}.css");
 
-            // [STEP 1] Wrap CSS with component ID for scoping
+            // === [ STEP 1 ] Scope component CSS using the element ID ===
             css = ScopeCssToComponent(css);
+
+            // === [ STEP 2 ] Resource-link mode: register and defer insertion ===
+            if (UseResourceLink)
+            {
+                var hash = ResourceHelpers.RegisterAndTrackStyle(css);
+                ResourceManifest.Current.AddStyle(hash); // Style link will be rendered separately (e.g., in <head>)
+                return html;
+            }
+
+            // === [ STEP 3 ] Inline style: inject <style> block into component ===
             string styleTag = $"<style>\n{css}\n</style>";
-
-            // [STEP 2] Remove external link
-            html = html.Replace(pattern, string.Empty);
-
-            // [STEP 3] Insert inline <style> right after <tag-helper>
             var tagOpen = "<tag-helper";
             int tagStartIndex = html.IndexOf(tagOpen, StringComparison.OrdinalIgnoreCase);
             if (tagStartIndex >= 0)
@@ -110,29 +125,49 @@ namespace Instancium.TagKit.Core.Utils
         }
 
         /// <summary>
-        /// Inlines the JavaScript logic for the component by replacing a reference like
-        /// <c>&lt;script src="./Component.js"&gt;&lt;/script&gt;</c> with an inline IIFE (Immediately Invoked Function Expression).
-        /// 
-        /// This allows all component logic to be embedded as part of the final markup,
-        /// making it portable and testable without external dependencies. Lifecycle hooks are
-        /// no longer automatically invoked — the component itself is responsible for exposing and triggering them.
+        /// Inlines the JavaScript logic for the component by locating a reference like
+        /// <c>&lt;script src="./Component.js"&gt;&lt;/script&gt;</c> and embedding its contents
+        /// as a scoped inline IIFE (Immediately Invoked Function Expression).
+        ///
+        /// The JavaScript file is expected to begin with:
+        /// <c>var el = document.querySelector("tag-helper");</c>
+        /// During rendering, this selector will be rewritten to reference the actual component ID:
+        /// <c>document.querySelector("#tag-abc123")</c>, allowing all logic to remain scoped within the component root.
+        ///
+        /// This design enables strict DOM isolation, avoids global bindings, and promotes testability
+        /// and portability of the component logic across render contexts (SSR, hydration, snapshot testing, etc.).
         /// </summary>
-        /// <param name="html">Raw component markup loaded from the embedded HTML resource.</param>
-        /// <param name="baseName">Base name of the component (e.g., TestTagHelper).</param>
-        /// <param name="baseNamespace">Root namespace where embedded resources are located.</param>
-        /// <param name="assembly">Assembly containing the embedded JavaScript resource.</param>
-        /// <returns>HTML with inline JavaScript logic injected in place of the external script reference.</returns>
+        /// <param name="html">Raw HTML markup loaded from the embedded .html resource.</param>
+        /// <param name="baseName">Logical base name of the component (e.g., <c>HelloCard</c>).</param>
+        /// <param name="baseNamespace">Namespace context in which the resource files reside.</param>
+        /// <param name="assembly">Assembly where embedded .js and .html resources are defined.</param>
+        /// <returns>Processed HTML with inline JavaScript embedded and scoped to the component element.</returns>
 
         private async Task<string> EmbedJsAsync(string html, string baseName, string baseNamespace, Assembly assembly)
         {
+            // === [ STEP 1 ] Look for the external script pattern in embedded HTML ===
             var pattern = $"<script src=\"./{baseName}.js\"></script>";
 
             if (html.Contains(pattern))
             {
+                // === [ STEP 2 ] Load and bind embedded JS to the component ===
+                // We assume the JS begins with: var el = document.querySelector("tag-helper");
+                // This placeholder selector will be rewritten to use the actual ComponentId
+                // so the script remains scoped and testable across different render contexts.
                 string js = await ReadEmbeddedFileAsync(assembly, $"{baseNamespace}.{baseName}.js");
-                string scriptTag = $"<script>\n(() => {{\n{js}\n}})();\n</script>";
+                js = js.Replace("document.querySelector(\"tag-helper\")", $"document.querySelector(\"#{ComponentId}\")");
 
-                html = html.Replace(pattern, string.Empty);
+
+                // === [ STEP 3 ] Resource-link mode: register and defer inclusion ===
+                if (UseResourceLink)
+                {
+                    var hash = ResourceHelpers.RegisterAndTrackScript(js);
+                    ResourceManifest.Current.AddScript(hash); // Will be rendered as <script src="/...script-{hash}.js">
+                    return html; // Do not inline — external reference will be added separately
+                }
+
+                // === [ STEP 4 ] Inline mode: embed <script> block inside the component ===
+                string scriptTag = $"<script>\n(() => {{\n{js}\n}})();\n</script>";
 
                 int insertIndex = html.IndexOf("</tag-helper>", StringComparison.OrdinalIgnoreCase);
                 html = insertIndex >= 0

@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Test TagHelper – Instancium JS Scoped Demo</title>
+    <link href="./TestTagHelper.css" rel="stylesheet" />
+    <style>
+        .status-line {
+            font-weight: bold;
+            color: #777;
+            transition: color 0.4s;
+        }
+
+            .status-line.active {
+                color: green;
+            }
+
+        .test-panel {
+            margin-bottom: 1rem;
+            background: #f8f8f8;
+            padding: 1em;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            padding: 6px 12px;
+            margin-right: 0.5em;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 💡 External UI (can be moved to layout or external demo page) -->
+    <section class="test-panel">
+        <h3>External Interaction</h3>
+        <p>This panel demonstrates invoking component APIs and hooks from outside.</p>
+        <button type="button" onclick="callComponentApi()">🔁 Call sayHello()</button>
+        <button type="button" onclick="triggerInitHook()">🚀 Trigger onInit()</button>
+        <div class="status-line" id="hook-status">⏳ Awaiting onInit...</div>
+    </section>
+
+    <!-- 🧩 Razor-rendered component -->
+    <tag-helper>
+        <div class="hello-card">
+            <h2>@_Welcome_</h2>
+            <p>@_Intro_</p>
+            <div class="time-block">
+                @_Now_: {{CurrentTime}}
+            </div>
+            <button type="button" class="say-btn">@_ClickMe_</button>
+        </div>
+    </tag-helper>
+
+    <!-- 💬 External control logic (optional in demo) -->
+    <script>
+        function callComponentApi() {
+            const el = document.querySelector("tag-helper");
+            el?.api?.sayHello?.();
+        }
+
+        function triggerInitHook() {
+            const el = document.querySelector("tag-helper");
+            el?.api?.onInit?.();
+        }
+
+        // Optional auto-trigger for demonstration
+        document.addEventListener("DOMContentLoaded", triggerInitHook);
+    </script>
+
+    <script src="./TestTagHelper.js"></script>
+</body>
+</html>

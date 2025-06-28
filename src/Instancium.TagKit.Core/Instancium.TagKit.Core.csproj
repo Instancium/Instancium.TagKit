@@ -11,19 +11,22 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="TestTagHelper\TestTagHelper.css" />
-	  <None Remove="TestTagHelper\TestTagHelper.html" />
-	  <None Remove="TestTagHelper\TestTagHelper.js" />
+	  <None Remove="Components\TestTagHelper\TestTagHelper.css" />
+	  <None Remove="Components\TestTagHelper\TestTagHelper.html" />
+	  <None Remove="Components\TestTagHelper\TestTagHelper.js" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="TestTagHelper\TestTagHelper.css" />
-	  <EmbeddedResource Include="TestTagHelper\TestTagHelper.html" />
-	  <EmbeddedResource Include="TestTagHelper\TestTagHelper.js" />
+	  <EmbeddedResource Include="Components\TestTagHelper\TestTagHelper.css" />
+	  <EmbeddedResource Include="Components\TestTagHelper\TestTagHelper.html" />
+	  <EmbeddedResource Include="Components\TestTagHelper\TestTagHelper.js" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.3.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Razor" Version="2.3.0" />
 	  <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.6" />
 	  <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.6" />

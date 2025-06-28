@@ -1,5 +1,5 @@
-﻿using Instancium.TagKit.Core.Config;
-using Instancium.TagKit.Core.TestTagHelper;
+﻿using Instancium.TagKit.Core.Components.TestTagHelper;
+using Instancium.TagKit.Core.Config;
 using Instancium.TagKit.Core.Utils;
 using Instancium.TagKit.Tests.Core.Infrastructure;
 using Microsoft.Extensions.Options;
@@ -18,7 +18,6 @@ namespace Instancium.TagKit.Tests.Core
             Assert.Contains("<style>", html);
             Assert.Contains(".hello-card", html);
             Assert.Contains("<script>", html);
-            Assert.Contains("window.helloCard", html);
         }
 
         [Fact]
