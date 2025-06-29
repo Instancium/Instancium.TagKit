@@ -1,9 +1,8 @@
-﻿using Instancium.TagKit.Core.Core;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Instancium.TagKit.Core.Utils
+namespace Instancium.TagKit.Core.Rendering
 {
     /// <summary>
     /// Provides methods for rendering embedded HTML views,

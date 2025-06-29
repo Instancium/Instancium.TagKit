@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Instancium.TagKit.Core.Core
+namespace Instancium.TagKit.Core.Rendering
 {
     public class ResourceHash
     {

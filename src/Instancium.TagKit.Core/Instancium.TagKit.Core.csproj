@@ -11,17 +11,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Components\TestTagHelper\TestTagHelper.css" />
-	  <None Remove="Components\TestTagHelper\TestTagHelper.html" />
-	  <None Remove="Components\TestTagHelper\TestTagHelper.js" />
-	  <None Remove="Resources\Clients\Inst.js" />
+	  <None Remove="Samples\TestTagHelper\TestTagHelper.css" />
+	  <None Remove="Samples\TestTagHelper\TestTagHelper.html" />
+	  <None Remove="Samples\TestTagHelper\TestTagHelper.js" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Components\TestTagHelper\TestTagHelper.css" />
-	  <EmbeddedResource Include="Components\TestTagHelper\TestTagHelper.html" />
-	  <EmbeddedResource Include="Components\TestTagHelper\TestTagHelper.js" />
-	  <EmbeddedResource Include="Resources\Clients\Inst.js" />
+	  <EmbeddedResource Include="Samples\TestTagHelper\TestTagHelper.css" />
+	  <EmbeddedResource Include="Samples\TestTagHelper\TestTagHelper.html" />
+	  <EmbeddedResource Include="Samples\TestTagHelper\TestTagHelper.js" />
+	  <EmbeddedResource Include="Runtime\EmbeddedResources\Inst.js" />
 	</ItemGroup>
 
 	<ItemGroup>

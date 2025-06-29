@@ -1,4 +1,4 @@
-﻿using Instancium.TagKit.Core.Core;
+﻿using Instancium.TagKit.Core.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 
@@ -31,7 +31,7 @@ namespace Instancium.TagKit.Core.Controllers
         public IActionResult GetInstRuntime()
         {
             var stream = Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("Instancium.TagKit.Core.Resources.Client.inst.js");
+                .GetManifestResourceStream("Instancium.TagKit.Core.Runtime.EmbeddedResources.inst.js");
 
             if (stream is null)
                 return NotFound();

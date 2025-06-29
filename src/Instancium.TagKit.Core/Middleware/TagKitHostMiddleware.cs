@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Instancium.TagKit.Core.Rendering;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Text;
 
-namespace Instancium.TagKit.Core.Core
+namespace Instancium.TagKit.Core.Middleware
 {
     public class TagKitHostMiddleware
     {

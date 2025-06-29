@@ -1,5 +1,5 @@
 ﻿using Instancium.TagKit.Core.Config;
-using Instancium.TagKit.Core.Utils;
+using Instancium.TagKit.Core.Rendering;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Localization;
@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace Instancium.TagKit.Core.Core
+namespace Instancium.TagKit.Core
 {
     /// <summary>
     /// Provides a foundation for TagHelpers that render HTML from embedded resources with optional localization and language switching.

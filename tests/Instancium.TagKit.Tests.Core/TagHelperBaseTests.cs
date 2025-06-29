@@ -1,6 +1,6 @@
-﻿using Instancium.TagKit.Core.Components.TestTagHelper;
-using Instancium.TagKit.Core.Config;
-using Instancium.TagKit.Core.Utils;
+﻿using Instancium.TagKit.Core.Config;
+using Instancium.TagKit.Core.Rendering;
+using Instancium.TagKit.Core.Samples.TestTagHelper;
 using Instancium.TagKit.Tests.Core.Infrastructure;
 using Microsoft.Extensions.Options;
 using System.Reflection;

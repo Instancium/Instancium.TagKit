@@ -1,4 +1,4 @@
-﻿using Instancium.TagKit.Core.Core;
+﻿using Instancium.TagKit.Core.Rendering;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Instancium.TagKit.Core.Components
+namespace Instancium.TagKit.Core.Runtime
 {
     public class CssLinksViewComponent : ViewComponent
     {

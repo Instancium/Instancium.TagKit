@@ -1,4 +1,4 @@
-﻿using Instancium.TagKit.Core.Components.TestTagHelper;
+﻿using Instancium.TagKit.Core.Samples.TestTagHelper;
 using Instancium.TagKit.Tests.Core.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;

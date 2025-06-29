@@ -1,11 +1,11 @@
-﻿using Instancium.TagKit.Core.Core;
+﻿using Instancium.TagKit.Core.Rendering;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using System.Text;
 
 
-namespace Instancium.TagKit.Core.Components
+namespace Instancium.TagKit.Core.Runtime
 {
     public class ScriptLinksViewComponent : ViewComponent
     {
