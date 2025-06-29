@@ -14,6 +14,8 @@ namespace Instancium.TagKit.Core.Components
             var manifest = ResourceManifest.Current;
             var tags = new StringBuilder();
 
+            tags.AppendLine("<script src=\"/instancium/resources/inst.js?v=1\" defer></script>");
+
             foreach (var hash in manifest.ScriptHashes)
                 tags.AppendLine($"<script src=\"/instancium/resources/script-{hash}.js?v={hash}\" defer></script>");
 

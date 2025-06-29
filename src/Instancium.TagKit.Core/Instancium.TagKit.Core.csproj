@@ -14,12 +14,14 @@
 	  <None Remove="Components\TestTagHelper\TestTagHelper.css" />
 	  <None Remove="Components\TestTagHelper\TestTagHelper.html" />
 	  <None Remove="Components\TestTagHelper\TestTagHelper.js" />
+	  <None Remove="Resources\Clients\Inst.js" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <EmbeddedResource Include="Components\TestTagHelper\TestTagHelper.css" />
 	  <EmbeddedResource Include="Components\TestTagHelper\TestTagHelper.html" />
 	  <EmbeddedResource Include="Components\TestTagHelper\TestTagHelper.js" />
+	  <EmbeddedResource Include="Resources\Clients\Inst.js" />
 	</ItemGroup>
 
 	<ItemGroup>

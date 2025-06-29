@@ -1,6 +1,6 @@
 ﻿using Instancium.TagKit.Core.Core;
-using Instancium.TagKit.Core.Utils;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 
 namespace Instancium.TagKit.Core.Controllers
@@ -25,6 +25,21 @@ namespace Instancium.TagKit.Core.Controllers
             return js is null
                 ? NotFound()
                 : Content(js, "application/javascript");
+        }
+
+        [HttpGet("inst.js")]
+        public IActionResult GetInstRuntime()
+        {
+            var stream = Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream("Instancium.TagKit.Core.Resources.Client.inst.js");
+
+            if (stream is null)
+                return NotFound();
+
+            using var reader = new StreamReader(stream);
+            var content = reader.ReadToEnd();
+
+            return Content(content, "application/javascript");
         }
     }
 
