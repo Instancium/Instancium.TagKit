@@ -51,6 +51,15 @@ While a formal `CONTRIBUTING.md` is coming soon, feel free to explore the `Core`
 Instancium maintains its architectural rhythm through a growing guild — a collective of engineers, philosophers, and designers who care about the clarity and direction of the protocol.  
 If you seek to contribute not just code, but meaning — [consider joining](https://instancium.com/#guild).
 
+## 🏢 Supporting the Project
+Instancium is more than a runtime — it's a philosophy of transparent, declarative architecture.
+
+If your organization finds value in adopting Instancium for clean, minimal, framework-free UI infrastructure, please consider supporting the project:
+
+- 💼 Use it in production — and share feedback to help evolve the protocol
+- 🤝 Sponsor development — support continuous, focused, transparent work
+- 🌱 Join the Guild — help shape the architectural core and steward its direction
+- 📬 Get in touch: support@protonmail.com 🧭 Learn more: instancium.com (soon)
 
 📄 License
 Apache 2.0 © 2025 Instancium Contributors
