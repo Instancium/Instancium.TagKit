@@ -38,11 +38,11 @@ An Instancium component may consist of:
 
 | Part             | Description                                      |
 |------------------|--------------------------------------------------|
-| `.cshtml` / `.html` | Markup template (can be Razor or plain HTML)     |
-| `.cs`             | Optional logic (e.g. `ComponentTagHelper`, `Renderer`) |
-| `.css`            | Optional styles, inline or external              |
-| `.js`             | Optional behavior, scoped per component          |
-| `.resx`           | Optional localization resources                  |
+| `.cs`            | Component logic (e.g. `ComponentTagHelper : TagHelperBase`) |
+| `.html`		   | Markup template (plain HTML)     |
+| `.css`           | Optional styles, inline or external              |
+| `.js`            | Optional behavior, scoped per component          |
+| `.resx`          | Optional localization resources                  |
 
 ---
 
@@ -114,6 +114,38 @@ See **DemoApp** for a working sample including:
 - Resource registries  
 - Lifecycle demos  
 - SPA-style reload without a full frontend stack
+
+
+## 🚫 Why No Razor in Markup Template (plain HTML)?
+
+Instancium components intentionally avoid Razor (`.cshtml`) templates — and this is a core part of the protocol.
+
+### ❌ Razor Encourages Mixing Concerns
+
+Allowing `.cshtml` in components opens the door to:
+
+- Server-side logic inside markup (`@if`, `@foreach`, etc.)
+- State mutations and service calls within HTML structure
+- Tightly coupled UI that depends on compilation and backend context
+
+This undermines the very purpose of components as declarative, self-contained units.
+
+---
+
+### ✅ Plain HTML Preserves Clarity and Autonomy
+
+By using `.html` templates without server directives:
+
+- 🧘 You get true separation of concerns — code in `.cs`, structure in `.html`
+- 🛠 Components don’t require compilation — edit and reload instantly
+- 🧑‍🎨 Frontend work can happen in any environment or tool (even outside .NET)
+- 🧩 Markup becomes portable, testable, and safe for reuse
+
+---
+
+> Razor is powerful — but too powerful in the wrong layer.  
+> Instancium chooses simplicity and direction over convenience and ambiguity.
+
 
 ## ⚙️ Установка (Setup)
 
