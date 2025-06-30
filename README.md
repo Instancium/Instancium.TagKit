@@ -19,6 +19,16 @@ Instancium does not introduce a runtime. It reveals one.
 
 Components describe. Protocols coordinate. You remain in control.
 
+### Using Razor (or not)
+
+Instancium components can be rendered within Razor Pages or Views, but Razor is not required — nor is it central to the protocol.
+
+- You can use Razor as a layout engine or bootstrapping host.
+- Components are TagHelpers, not `.cshtml` views.
+- There is no dependency on Razor compilation or lifecycle.
+
+Razor is optional. Protocol is primary.
+
 ---
 
 ## 🧱 Project Structure
