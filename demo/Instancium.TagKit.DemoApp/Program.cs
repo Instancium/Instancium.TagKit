@@ -7,9 +7,10 @@ builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();
 
 
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddLocalization();
-builder.Services.AddControllersWithViews();
+// These services are required for Instancium Core to function properly:
+builder.Services.AddHttpContextAccessor();    // Enables access to HttpContext in components and services
+builder.Services.AddLocalization();           // Supports localization/internationalization of UI content
+builder.Services.AddControllersWithViews();   // Enables MVC + Razor view rendering for component endpoints
 
 var app = builder.Build();
 
@@ -17,21 +18,22 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
-
 app.UseRouting();
-app.UseMiddleware<TagKitHostMiddleware>();
 
-app.MapDefaultControllerRoute();
+// These middleware and route mappings are required for Instancium Core to operate correctly:
+app.UseStaticFiles();                        // Serves static assets (scripts, styles, etc.)
+app.UseMiddleware<TagKitHostMiddleware>();   // Enables server-side routing for TagKit component endpoints
+app.MapStaticAssets();                       // Maps /instancium/resources/* for script/style delivery
+app.MapDefaultControllerRoute();             // Enables default MVC routing for controllers and views
+
+
 app.UseAuthorization();
 
-app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
 
