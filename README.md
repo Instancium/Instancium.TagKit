@@ -31,18 +31,16 @@ Components describe. Protocols coordinate. You remain in control.
 
 ---
 
-## 🚀 Getting Started
-
-```bash
-git clone https://github.com/Instancium/Instancium.TagKit.git
-cd Instancium.TagKit
-dotnet restore
-dotnet run --project src/DemoApp
-```
-
 ## 🤝 Contributing
-Instancium welcomes contributions that align with its vision: transparency, autonomy, and composability.  
-A proper CONTRIBUTING.md is coming soon — until then, feel free to explore the Core, suggest extensions, or raise issues.  
+
+Instancium welcomes contributions that align with its vision: transparency, autonomy, and composability.
+
+While a formal `CONTRIBUTING.md` is coming soon, feel free to explore the `Core`, suggest extensions, or raise issues.
+
+👁️‍🗨️ **The Guild**  
+Instancium maintains its architectural rhythm through a growing guild — a collective of engineers, philosophers, and designers who care about the clarity and direction of the protocol.  
+If you seek to contribute not just code, but meaning — [consider joining](https://instancium.com/#guild).
+
 
 📄 License
 Apache 2.0 © 2025 Instancium Contributors
