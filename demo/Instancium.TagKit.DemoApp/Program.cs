@@ -1,7 +1,15 @@
+﻿using Instancium.TagKit.Core.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages()
+    .AddRazorRuntimeCompilation();
+
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddLocalization();
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
@@ -13,10 +21,14 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseRouting();
+app.UseMiddleware<TagKitHostMiddleware>();
 
+app.MapDefaultControllerRoute();
 app.UseAuthorization();
 
 app.MapStaticAssets();

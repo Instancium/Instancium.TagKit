@@ -24,6 +24,15 @@ namespace Instancium.TagKit.Core.Middleware
 
             await _next(context);
 
+
+            if (context.Items.TryGetValue("__inst_render_mode", out var mode) &&
+                mode?.ToString() == "fragment")
+            {
+                buffer.Seek(0, SeekOrigin.Begin);
+                await buffer.CopyToAsync(originalBody);
+                return;
+            }
+
             if (!IsHtmlResponse(context.Response))
             {
                 buffer.Seek(0, SeekOrigin.Begin);
@@ -52,6 +61,9 @@ namespace Instancium.TagKit.Core.Middleware
 
         private static string InjectResources(string html)
         {
+            if (html.Contains("/instancium/resources/inst.js"))
+                return html;
+
             var headInjection = BuildHeadInjection();
             var bodyInjection = BuildFooterInjection();
 

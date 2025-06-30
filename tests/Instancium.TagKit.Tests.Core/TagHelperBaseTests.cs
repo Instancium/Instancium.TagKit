@@ -53,7 +53,7 @@ namespace Instancium.TagKit.Tests.Core
             var html = await builder.ReadFromResourceAsync(typeof(TestTagHelper));
 
             Assert.DoesNotContain("<tag-helper", html);
-            Assert.Contains("hello-card", html); // Основной контент остался
+            Assert.Contains("hello-card", html); 
         }
 
         [Fact]

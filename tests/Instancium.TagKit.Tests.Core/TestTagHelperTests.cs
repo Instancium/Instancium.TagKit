@@ -1,14 +1,5 @@
 ﻿using Instancium.TagKit.Core.Samples.TestTagHelper;
 using Instancium.TagKit.Tests.Core.Infrastructure;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Localization;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Instancium.TagKit.Tests.Core
 {

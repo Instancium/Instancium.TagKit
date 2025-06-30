@@ -8,14 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="snapshots\TestTagHelper.snapshot.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="snapshots\TestTagHelper.snapshot.html" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />

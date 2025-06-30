@@ -20,8 +20,8 @@
 
     el.api = api;
 
-    // ✅ Привязка кнопки к локальному API
     el.querySelector(".say-btn")?.addEventListener("click", api.sayHello);
 
     api.onInit?.();
 })();
+

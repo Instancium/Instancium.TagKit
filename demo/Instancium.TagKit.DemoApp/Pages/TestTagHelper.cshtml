@@ -1,0 +1,20 @@
+﻿@page
+@model Instancium.TagKit.DemoApp.Pages.TestTagHelperModel
+@addTagHelper *, Instancium.TagKit.Core
+
+<h2>Reload Demo</h2>
+
+<test-tag id="test-tag"></test-tag>
+
+<button onclick="reloadTag()">🔄 Reload test-tag</button>
+
+<script>
+    function reloadTag() {
+      console.log("Click");
+      window.inst.reload("#test-tag", {
+        tag: "test-tag",
+        lang: "en",
+        id: "test-tag"
+      });
+    }
+</script>

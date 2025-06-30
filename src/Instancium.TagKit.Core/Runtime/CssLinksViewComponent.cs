@@ -12,7 +12,7 @@ namespace Instancium.TagKit.Core.Runtime
 {
     public class CssLinksViewComponent : ViewComponent
     {
-        public static IViewComponentResult Invoke()
+        public IViewComponentResult Invoke()
         {
             var manifest = ResourceManifest.Current;
             var tags = new StringBuilder();

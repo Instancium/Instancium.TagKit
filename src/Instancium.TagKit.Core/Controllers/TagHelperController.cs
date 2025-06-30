@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Instancium.TagKit.Core.Rendering;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -23,7 +24,9 @@ namespace Instancium.TagKit.Core.Controllers
         [HttpGet("{tag}")]
         public async Task<IActionResult> RenderTag(string tag, [FromQuery] string lang = "en", [FromQuery] string? id = null)
         {
-            var type = DiscoverTagHelperByName(tag);
+            HttpContext.Items["__inst_render_mode"] = "fragment";
+
+            var type = ComponentRegistry.Resolve(tag);
             if (type == null)
                 return NotFound($"TagHelper '{tag}' not found");
 
@@ -50,28 +53,16 @@ namespace Instancium.TagKit.Core.Controllers
             await helper.ProcessAsync(context, output);
             var html = output.Content.GetContent();
 
-            return Content(html, "text/html");
-        }
+            var manifest = ResourceManifest.Current;
+            return new JsonResult(new
+            {
+                html,
+                resources = new {
+                 scripts = manifest.ScriptHashes.ToArray(),
+                 styles = manifest.StyleHashes.ToArray(),
+                },
+            });
 
-        private static Type? DiscoverTagHelperByName(string tag)
-        {
-            var candidates = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a =>
-                {
-                    try { return a.GetTypes(); } catch { return Array.Empty<Type>(); }
-                });
-
-            return candidates.FirstOrDefault(t =>
-                typeof(TagHelper).IsAssignableFrom(t) &&
-                t.Name.Equals($"{ToPascal(tag)}TagHelper", StringComparison.OrdinalIgnoreCase));
-        }
-
-        private static string ToPascal(string kebab)
-        {
-            return string.Concat(
-                kebab.Split('-', StringSplitOptions.RemoveEmptyEntries)
-                     .Select(w => char.ToUpper(w[0]) + w.Substring(1))
-            );
         }
     }
 

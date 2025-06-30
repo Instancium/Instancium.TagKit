@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System.Globalization;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace Instancium.TagKit.Core
@@ -40,7 +41,7 @@ namespace Instancium.TagKit.Core
         /// rendered output as the element's DOM `id` and used for instance registration, external
         /// scripting, and hook resolution (e.g., ComponentHooks[id]).
         /// </summary>
-        [HtmlAttributeName("element-id")]
+        [HtmlAttributeName("id")]
         public string ElementId { get; set; } = $"tag-{Guid.NewGuid():N}";
 
 
@@ -69,6 +70,7 @@ namespace Instancium.TagKit.Core
             if (!string.IsNullOrWhiteSpace(html))
             {
                 string localized = Localize(html);
+                OnComponentRendered();
                 output.Content.SetHtmlContent(localized);
             }
         }
@@ -132,24 +134,30 @@ namespace Instancium.TagKit.Core
         }
 
         /// <summary>
-        /// Determines whether the request is fetch-like (e.g., from SPA or AJAX).
-        /// </summary>
-        protected virtual bool IsFetchRequest(HttpContext? context)
-        {
-            if (context == null) return false;
-
-            var headers = context.Request.Headers;
-            return headers.TryGetValue("X-Requested-With", out var value) && value == "XMLHttpRequest"
-                || headers.TryGetValue("Accept", out var accept) && accept.Any(a => a.Contains("application/json"));
-        }
-
-        /// <summary>
         /// Must be implemented to generate raw HTML content to be localized and rendered.
         /// </summary>
         protected abstract Task<string> RenderHtmlAsync(TagHelperContext context, TagHelperOutput output);
 
         protected virtual string? GetComponentCss() => null;
         protected virtual string? GetComponentJs() => null;
+
+        private static string ToKebabCase(string input)
+        {
+            return Regex.Replace(input, "(?<!^)([A-Z])", "-$1").ToLowerInvariant();
+        }
+
+        protected virtual string? ResolveTagName()
+        {
+            return GetType().GetCustomAttribute<HtmlTargetElementAttribute>()?.Tag
+                   ?? ToKebabCase(GetType().Name.Replace("TagHelper", ""));
+        }
+
+        protected virtual void OnComponentRendered()
+        {
+            var tag = ResolveTagName();
+            if (!string.IsNullOrWhiteSpace(tag))
+                ComponentRegistry.Register(tag, GetType());
+        }
 
     }
 }

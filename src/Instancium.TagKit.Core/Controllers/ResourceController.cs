@@ -31,7 +31,7 @@ namespace Instancium.TagKit.Core.Controllers
         public IActionResult GetInstRuntime()
         {
             var stream = Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("Instancium.TagKit.Core.Runtime.EmbeddedResources.inst.js");
+                .GetManifestResourceStream("Instancium.TagKit.Core.Runtime.EmbeddedResources.Inst.js");
 
             if (stream is null)
                 return NotFound();
