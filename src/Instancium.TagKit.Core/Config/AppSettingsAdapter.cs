@@ -21,6 +21,8 @@ namespace Instancium.TagKit.Core.Config
 
         /// <inheritdoc/>
         public string BaseUrl => _options.BaseUrl ?? "";
+
+        public bool UseResourceLink => _options.UseResourceLink;
     }
 }
 

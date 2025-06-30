@@ -120,7 +120,8 @@ namespace Instancium.TagKit.Core
         {
             var viewBuilder = new TagViewBuilder()
             {
-                ComponentId = ElementId
+                ComponentId = ElementId,
+                UseResourceLink = _settings.UseResourceLink,
             };
             return await viewBuilder.ReadFromResourceAsync(GetHtmlResourceOwnerType());
         }

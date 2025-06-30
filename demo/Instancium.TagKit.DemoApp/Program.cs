@@ -1,4 +1,6 @@
-﻿using Instancium.TagKit.Core.Middleware;
+﻿using Instancium.TagKit.Core.Config;
+using Instancium.TagKit.Core.Middleware;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,17 @@ builder.Services.AddRazorPages()
 builder.Services.AddHttpContextAccessor();    // Enables access to HttpContext in components and services
 builder.Services.AddLocalization();           // Supports localization/internationalization of UI content
 builder.Services.AddControllersWithViews();   // Enables MVC + Razor view rendering for component endpoints
+
+// Bind configuration section if present
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("Instancium"));
+
+// Register the adapter to expose IAppSettings
+// IAppSettings is provided via AppSettingsAdapter,
+// which safely exposes configuration values through DI
+// and decouples internal logic from direct use of IOptions<T>.
+builder.Services.AddSingleton<IAppSettings, AppSettingsAdapter>();
+
+
 
 var app = builder.Build();
 

@@ -9,5 +9,7 @@ namespace Instancium.TagKit.Core.Config
     {
         /// <inheritdoc/>
         public virtual string BaseUrl { get; set; } = "/";
+        /// <inheritdoc/>
+        public bool UseResourceLink { get; set; }
     }
 }
