@@ -80,16 +80,24 @@ No global runtime.
 No tight coupling.
 
 
-## 🚀 Runtime Reloading
+## 🔁 Usage Examples: `inst.reload(...)`
+
+Instancium provides a flexible runtime API to reload components dynamically.  
+You can control how much context you pass — the system fills in the rest.
 
 ```js
-inst.reload("#my-box", {
-  tag: "sample-box",
-  id: "my-box"
-}, true);
+// 🔹 Minimal reload — auto-detects tag and ID from the element
+inst.reload("#test-tag");
+
+// 🔹 Reload with parameters and mount control
+inst.reload("#test-tag", {
+  lang: "en"
+}, false); // replaces markup only; skips script execution and lifecycle
+
 ```
 
-ыThis will:
+
+This will:
 
 - Fetch the latest HTML for the component
 - Replace its DOM subtree

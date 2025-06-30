@@ -1,51 +1,41 @@
 ﻿window.inst = window.inst || {};
 
-inst.reload = async function (selector, options, mount = true) {
+inst.reload = async function (selector, options = {}, mount = true) {
     const el = document.querySelector(selector);
     if (!el) return;
 
-    const { tag, lang = "en", id = el.id } = options;
+    const tag = options.tag || el.getAttribute("is") || el.tagName.toLowerCase();
+    const id = options.id || el.id;
+    const lang = options.lang || "en";
+
     const query = new URLSearchParams({ lang, id });
-    const url = `/taghelper/${tag}?` + query;
+    const url = `/taghelper/${tag}?` + query.toString();
 
     const { html, resources } = await fetch(url).then(r => r.json());
 
     const tmp = document.createElement("div");
     tmp.innerHTML = html.trim();
 
-    // 🔄 Replace existing DOM content
-    while (el.firstChild) el.removeChild(el.firstChild);
-    for (const node of tmp.childNodes) {
-        el.appendChild(node.cloneNode(true));
-    }
+    el.replaceChildren(...tmp.childNodes);
 
-    // ⛩️ Execute behavior only if mount is true
     if (mount) {
-        // 🔥 Re-execute inline <script> elements
-        el.querySelectorAll("script").forEach(script => {
-            if (script.src) return;
+        // 🔥 Re-execute inline scripts
+        el.querySelectorAll("script:not([src])").forEach(script => {
             const s = document.createElement("script");
-            for (const attr of script.attributes) s.setAttribute(attr.name, attr.value);
+            [...script.attributes].forEach(attr => s.setAttribute(attr.name, attr.value));
             s.textContent = script.textContent;
             script.replaceWith(s);
         });
 
-        // 🎨 Load external styles if needed
-        for (const hash of resources?.styles ?? []) {
-            inst.loadStyle(hash);
-        }
+        for (const hash of resources?.styles ?? []) inst.loadStyle(hash);
+        for (const hash of resources?.scripts ?? []) inst.loadScript(hash, true);
 
-        // 💡 Load external scripts if needed
-        for (const hash of resources?.scripts ?? []) {
-            inst.loadScript(hash, true);
-        }
-
-        // 🔁 Run component lifecycle if defined
         el.api?.onInit?.();
     }
 
     return el;
 };
+
 
 inst.loadScript = function (hash, force = false) {
     const baseSrc = `/instancium/resources/script-${hash}.js`;
