@@ -98,10 +98,10 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-	<data name="_TestKey_" xml:space="preserve">
+	<data name="_Welcome_" xml:space="preserve">
     <value>Ciao! Questo è un messaggio di prova da un TagHelper.</value>
   </data>
-	<data name="_Message_" xml:space="preserve">
+	<data name="_Intro_" xml:space="preserve">
     <value>Questo è un messaggio di test da un componente.</value>
   </data>
 	<data name="_Now_" xml:space="preserve">

@@ -94,7 +94,8 @@ namespace Instancium.TagKit.Core
         /// </summary>
         protected virtual string ResolveLanguageCode(TagHelperContext context)
         {
-            if (context.Items.TryGetValue("lang-code", out var val) && val is string code)
+            var attr = context.AllAttributes["lang-code"];
+            if (attr is not null && attr.Value is string code && !string.IsNullOrWhiteSpace(code))
                 return code;
 
             var header = _httpContextAccessor?.HttpContext?.Request?.Headers["X-Language-Code"].FirstOrDefault();
