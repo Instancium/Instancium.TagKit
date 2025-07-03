@@ -2,11 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Instancium.TagKit.Core.Controllers
 {
@@ -34,17 +29,22 @@ namespace Instancium.TagKit.Core.Controllers
             if (helper == null)
                 return BadRequest("Component failed to initialize");
             helper.LanguageCode = lang;
-           
-            if(id != null)
-            helper.ElementId = id;
+
+            var allAttributes = new TagHelperAttributeList
+            {
+                { "lang-code", lang }
+            };
+
+            if (id != null)
+            {
+                helper.ElementId = id;
+                allAttributes.Add("id", id);
+            }
 
             var context = new TagHelperContext(
-                new TagHelperAttributeList(),
-                new Dictionary<object, object>
-                {
-                    ["lang-code"] = lang
-                },
-                Guid.NewGuid().ToString());
+                allAttributes: allAttributes,
+                items: new Dictionary<object, object>(),
+                uniqueId: Guid.NewGuid().ToString());
 
             var output = new TagHelperOutput(tag,
                 new TagHelperAttributeList(),

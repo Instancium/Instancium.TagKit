@@ -107,4 +107,8 @@
 	<data name="_Now_" xml:space="preserve">
     <value>Ora attuale</value>
   </data>
+	<data name="_ClickMe_" xml:space="preserve">
+  <value>Di' Ciao</value>
+</data>
+
 </root>
