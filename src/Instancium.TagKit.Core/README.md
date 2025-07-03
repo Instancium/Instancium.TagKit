@@ -1,4 +1,4 @@
-﻿# Instancium Core
+﻿# Instancium TagKit Core
 
 **Render protocol, not framework.**  
 Instancium Core is a lightweight, render-agnostic runtime designed for component-based systems.  
