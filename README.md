@@ -13,31 +13,41 @@ Instancium does not introduce a runtime. It reveals one.
 - 🧠 Protocol over framework  
 - ✨ Predictability over magic  
 - 📦 Components as autonomous units of interface — not frontend artifacts  
-
+- 🤝 Server-first mindset with optional client-side activation
 - ⛔ **No frameworks. No ceremony. No implicit runtime.**  
 - 🕊️ **Stateless by default. Predictable by protocol. Never opaque.**
 
 Components describe. Protocols coordinate. You remain in control.
 
-### Using Razor (or not)
+### Plain HTML Preserves Clarity and Autonomy
 
-Instancium components can be rendered within Razor Pages or Views, but Razor is not required — nor is it central to the protocol.
+By using `.html` templates without server directives:
 
-- You can use Razor as a layout engine or bootstrapping host.
-- Components are TagHelpers, not `.cshtml` views.
-- There is no dependency on Razor compilation or lifecycle.
+- You get true separation of concerns — code in `.cs`, structure in `.html`
+- Components don’t require compilation — edit and reload instantly
+- Frontend work can happen in any environment or tool (even outside .NET)
+- Markup becomes portable, testable, and safe for reuse
 
-Razor is optional. Protocol is primary.
+### Why No Razor in Markup Template (plain HTML)?
 
----
+Instancium components intentionally avoid Razor (`.cshtml`) templates — and this is a core part of the protocol.
+
+Allowing `.cshtml` in components opens the door to:
+
+- Server-side logic inside markup (`@if`, `@foreach`, etc.)
+- State mutations and service calls within HTML structure
+- Tightly coupled UI that depends on compilation and backend context
+
+This undermines the very purpose of components as declarative, self-contained units.  
+Instancium chooses simplicity and direction over convenience and ambiguity.
 
 ## 🧱 Project Structure
 
 | Folder | Purpose |
 |--------|---------|
-| `src/Instancium.TagKit.Core` | Minimal runtime with reload protocol and resource hooks |
-| `src/DemoApp` | Example app: TagHelpers, reload flows, and UI scaffolding |
-| `tests/` | Runtime and component reload tests |
+| [src/Instancium.TagKit.Core](./src/Instancium.TagKit.Core) | Minimal runtime with reload protocol and resource hooks |
+| [src/DemoApp](./src/DemoApp) | Example app: TagHelpers, reload flows, and UI scaffolding |
+| [tests](./tests) | Runtime and component reload tests |
 
 ---
 
