@@ -105,3 +105,7 @@ This will:
 	app.MapDefaultControllerRoute();
 ```
 
+Start by building a simple SSR component.  
+Then add `inst.reload(...)` and experience how a living architecture thrives — without a single line of frontend framework.  
+
+If you value control, predictability, and clarity — welcome home.
