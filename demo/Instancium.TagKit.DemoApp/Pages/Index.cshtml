@@ -1,12 +1,58 @@
 ﻿@page
 @model IndexModel
+@addTagHelper *, Instancium.TagKit.Core
 @{
     ViewData["Title"] = "Home page";
 }
 
 <a href="/testtaghelper">TestTagHelper</a>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@section Head {
+
+    <style>
+        pre {
+            border-radius: 0.5rem;
+            background-color: #f8f9fa;
+        }
+    </style>
+}
+
+<!-- 📋 Коinstanciumллер -->
+<div class="panel">
+    <h2>🔧 Управление</h2>
+    <button class="btn" onclick="reloadTag('en')">Reload as 🇬🇧 English</button>
+    <button class="btn" onclick="reloadTag('it')">Reload as 🇮🇹 Italian</button>
+
+    <h3>🌐 Текущая культура:</h3>
+    <div id="culture">en</div>
+
+    <h3>📦 Последний SSR:</h3>
+    <pre><code id="htmlPreview"></code></pre>
+
+    <h3>🔎 Последний запрос:</h3>
+    <code id="lastCall"></code>
 </div>
+
+<!-- 🧪 Компонент -->
+<div class="panel">
+    <h2>🧪 <code>&lt;test-tag&gt;</code></h2>
+    <div id="test-tag-container">
+        <test-tag id="test-tag" lang-code="en"></test-tag>
+    </div>
+</div>
+
+<script>
+
+    const test = document.getElementById("test-tag-container");
+    document.getElementById("htmlPreview").textContent = test.innerHTML;
+
+    async function reloadTag(lang) {
+      document.getElementById("culture").textContent = lang;
+      await inst.reload("#test-tag", { lang });
+
+      const container = document.getElementById("test-tag-container");
+      document.getElementById("htmlPreview").textContent = container.innerHTML;
+      document.getElementById("lastCall").textContent = `inst.reload('#test-tag', {}, '?lang=${lang}')`;
+    }
+</script>
+

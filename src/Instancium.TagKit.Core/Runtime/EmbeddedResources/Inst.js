@@ -1,6 +1,15 @@
-﻿window.inst = window.inst || {};
+﻿// Create a safe global namespace for Instancium
+window.instancium = window.instancium || {};
+const core = window.instancium.core = window.instancium.core || {};
+const utils = window.instancium.utils = window.instancium.utils || {};
 
-inst.reload = async function (selector, options = {}, mount = true) {
+/**
+ * Reloads a tag component dynamically from the server.
+ * @param {string} selector - CSS selector for the target element.
+ * @param {object} options - Optional parameters: tag, id, lang.
+ * @param {boolean} mount - Whether to re-execute scripts and load resources.
+ */
+core.reload = async function (selector, options = {}, mount = true) {
     const el = document.querySelector(selector);
     if (!el) return;
 
@@ -15,11 +24,10 @@ inst.reload = async function (selector, options = {}, mount = true) {
 
     const tmp = document.createElement("div");
     tmp.innerHTML = html.trim();
-
     el.replaceChildren(...tmp.childNodes);
 
     if (mount) {
-        // 🔥 Re-execute inline scripts
+        // 🔁 Re-execute inline <script> tags
         el.querySelectorAll("script:not([src])").forEach(script => {
             const s = document.createElement("script");
             [...script.attributes].forEach(attr => s.setAttribute(attr.name, attr.value));
@@ -27,30 +35,32 @@ inst.reload = async function (selector, options = {}, mount = true) {
             script.replaceWith(s);
         });
 
-        for (const hash of resources?.styles ?? []) inst.loadStyle(hash);
-        for (const hash of resources?.scripts ?? []) inst.loadScript(hash, true);
+        // Load external styles and scripts
+        for (const hash of resources?.styles ?? []) utils.loadStyle(hash);
+        for (const hash of resources?.scripts ?? []) utils.loadScript(hash, true);
 
+        // Optional lifecycle hook
         el.api?.onInit?.();
     }
 
     return el;
 };
 
-
-inst.loadScript = function (hash, force = false) {
+/**
+ * Dynamically loads a JavaScript file by hash.
+ * Prevents duplicates unless `force` is true.
+ */
+utils.loadScript = function (hash, force = false) {
     const baseSrc = `/instancium/resources/script-${hash}.js`;
-
-    // 🔎 Check if script is already loaded (ignoring query string)
     const existing = [...document.scripts].find(s => s.src.split("?")[0] === location.origin + baseSrc);
+
     if (existing && !force) {
         console.log("⚪ Script already present, skipping:", baseSrc);
         return;
     }
 
-    // 🔄 Remove old version if force-reloading
     if (existing) existing.remove();
 
-    // ✅ Inject new <script> with cache-busting
     const s = document.createElement("script");
     s.src = baseSrc + "?ts=" + Date.now();
     s.defer = true;
@@ -58,16 +68,31 @@ inst.loadScript = function (hash, force = false) {
     console.log("✅ Script inserted:", s.src);
 };
 
-inst.loadStyle = function (hash) {
+/**
+ * Dynamically loads a CSS file by hash.
+ * Skips if already present.
+ */
+utils.loadStyle = function (hash) {
     const href = `/instancium/resources/style-${hash}.css`;
-
-    // 🎯 Prevent duplicate <link> injection
     const exists = [...document.styleSheets].some(s => s.href?.includes(href));
     if (exists) return;
 
-    // 🎨 Inject <link> for the stylesheet with cache-busting
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = href + "?ts=" + Date.now();
     document.head.appendChild(link);
 };
+
+/**
+ * Optional compatibility bridge for legacy `window.inst` usage.
+ * Only applies if `inst` is not already defined.
+ */
+if (!window.inst?.reload) {
+    window.inst = window.inst || {};
+    window.inst.reload = (...args) => {
+        console.warn("⚠️ inst.reload is deprecated. Use instancium.core.reload instead.");
+        return core.reload(...args);
+    };
+    window.inst.loadScript = utils.loadScript;
+    window.inst.loadStyle = utils.loadStyle;
+}
