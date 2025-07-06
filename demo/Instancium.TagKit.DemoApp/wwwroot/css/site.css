@@ -1,4 +1,4 @@
-html {
+﻿html {
   font-size: 14px;
 }
 
@@ -17,10 +17,6 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
-}
-
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
   color: var(--bs-secondary-color);
   text-align: end;
@@ -29,3 +25,92 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+body {
+    margin: 0;
+    padding: 1rem;
+    font-family: system-ui, sans-serif;
+    background-color: #ffffff;
+    color: #333;
+    line-height: 1.5;
+}
+
+pre {
+    border-radius: 0.5rem;
+    background-color: #f8f9fa;
+    padding: 0.5rem;
+    overflow-x: auto;
+}
+
+    .btn:hover {
+        background-color: #e0e0e0;
+        color: black;
+    }
+
+.menu-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    margin-bottom: 1rem;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+}
+
+.panel {
+    margin-bottom: 2rem;
+    padding: 8px;
+}
+
+h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    padding-bottom: 0.25rem;
+}
+
+code {
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    gap: 1rem;
+}
+
+.main-content {
+    flex: 1 1 300px;
+    min-width: 0;
+}
+
+.info-panel {
+    flex: 1 1 300px;
+    max-width: 500px;
+
+    padding: 1rem;
+
+    border-radius: 0.5rem;
+}
+
+ul {
+    padding-left: 1.25rem;
+}
+
+@media (max-width: 600px) {
+    .menu-buttons {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .flex-container {
+        flex-direction: column-reverse;
+    }
+}
+

@@ -1,7 +1,5 @@
 ﻿using Instancium.TagKit.Core.Config;
 using Instancium.TagKit.Core.Middleware;
-using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,5 +57,6 @@ app.UseAuthorization();
 
 app.MapRazorPages()
    .WithStaticAssets();
+
 
 app.Run();

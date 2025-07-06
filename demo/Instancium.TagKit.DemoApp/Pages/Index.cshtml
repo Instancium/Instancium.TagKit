@@ -4,55 +4,73 @@
 @{
     ViewData["Title"] = "Home page";
 }
-
-<a href="/testtaghelper">TestTagHelper</a>
-
-@section Head {
-
-    <style>
-        pre {
-            border-radius: 0.5rem;
-            background-color: #f8f9fa;
-        }
-    </style>
-}
-
-<!-- 📋 Коinstanciumллер -->
-<div class="panel">
-    <h2>🔧 Управление</h2>
-    <button class="btn" onclick="reloadTag('en')">Reload as 🇬🇧 English</button>
-    <button class="btn" onclick="reloadTag('it')">Reload as 🇮🇹 Italian</button>
-
-    <h3>🌐 Текущая культура:</h3>
-    <div id="culture">en</div>
-
-    <h3>📦 Последний SSR:</h3>
-    <pre><code id="htmlPreview"></code></pre>
-
-    <h3>🔎 Последний запрос:</h3>
-    <code id="lastCall"></code>
+<div class="menu-buttons">
+    <div style="flex-grow: 1">
+        <button onclick="reloadTag('it')" class="btn btn-dark">
+            🔄 Reload as 🇮🇹 Italian
+        </button>
+        <button onclick="reloadTag('en')" class="btn btn-dark">
+            🔄 Reload as 🇬🇧 English
+        </button>
+    </div>
 </div>
 
-<!-- 🧪 Компонент -->
-<div class="panel">
-    <h2>🧪 <code>&lt;test-tag&gt;</code></h2>
-    <div id="test-tag-container">
-        <test-tag id="test-tag" lang-code="en"></test-tag>
+<div class="flex-container">
+
+    <div class="main-content">
+        <h3>Rendered Component</h3>
+        <div class="panel">
+            <div id="test-tag-container">
+                <test-tag id="test-tag" lang-code="en"></test-tag>
+            </div>
+        </div>
+
+
+
+@*         <h3>📋 Reload Call Preview</h3> *@
+        <div class="panel">
+            <strong>HTML content after reload:</strong>
+            <pre><code id="htmlPreview"></code></pre>
+        </div>
+    </div>
+
+    <div class="info-panel">
+        <div class="panel">
+            <strong>Rendered TagHelper Component (Default State):</strong>
+            <div>
+                <code>
+                    @("<test-tag id='test-tag' lang-code='en'></test-tag>")
+                </code>
+            </div>
+        </div>
+
+        <h3>What This Page Demonstrates</h3>
+        <p>
+            This page showcases <strong>real-time re-rendering of an Instancium component</strong> — without compilation, without client-side frameworks, directly in the browser.
+            The <code>&lt;test-tag&gt;</code> component is rendered on the server using Razor and can be reloaded with new parameters (such as language) via external triggers.
+        </p>
+
+        <h3>What Happens on Reload</h3>
+        <ul>
+            <li>The component is <strong>re-fetched from the server</strong> and reinserted into the DOM.</li>
+            <li>All associated scripts and behaviors are <strong>re-executed</strong>, including localization, styles, and external orchestration logic.</li>
+            <li>
+                The component <strong>does not contain any JavaScript event handlers</strong> — for example, the <code>Di' Ciao</code> button is not bound to <code>onclick</code>.
+                All behavior is defined externally via the orchestration layer, making the component fully <strong>declarative, testable, and environment-agnostic</strong>.
+            </li>
+        </ul>
     </div>
 </div>
 
 <script>
+        async function reloadTag(lang) {
+            await instancium.core.reload("#test-tag", { lang });
 
-    const test = document.getElementById("test-tag-container");
-    document.getElementById("htmlPreview").textContent = test.innerHTML;
+            const container = document.getElementById("test-tag-container");
+            document.getElementById("htmlPreview").textContent = container.innerHTML;
+        }
 
-    async function reloadTag(lang) {
-      document.getElementById("culture").textContent = lang;
-      await inst.reload("#test-tag", { lang });
-
-      const container = document.getElementById("test-tag-container");
-      document.getElementById("htmlPreview").textContent = container.innerHTML;
-      document.getElementById("lastCall").textContent = `inst.reload('#test-tag', {}, '?lang=${lang}')`;
-    }
+        // Init preview on load
+        const container = document.getElementById("test-tag-container");
+        document.getElementById("htmlPreview").textContent = container.innerHTML;
 </script>
-

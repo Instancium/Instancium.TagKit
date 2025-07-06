@@ -29,11 +29,17 @@
     </style>
 </head>
 <body>
-
     <!-- 💡 External UI (can be moved to layout or external demo page) -->
     <section class="test-panel">
-        <h3>External Interaction</h3>
-        <p>This panel demonstrates invoking component APIs and hooks from outside.</p>
+        <h2>🧪 External Interaction (Development Only)</h2>
+        <p>
+            This panel demonstrates direct invocation of component APIs and lifecycle hooks from outside the component boundary — entirely within the browser, without requiring compilation or a build pipeline. It serves as a live test harness for evaluating component behavior in isolation.
+        </p>
+        <p style="color: #d9534f; font-weight: bold;">
+            ⚠️ This interface is strictly for development and debugging purposes. When rendered in production,
+            only the output inside the <b>tag-helper</b> boundary is included. None of the surrounding test harness,
+            scripting tools, or orchestration logic is bundled into production builds.
+        </p>
         <button type="button" onclick="callComponentApi()">🔁 Call sayHello()</button>
         <button type="button" onclick="triggerInitHook()">🚀 Trigger onInit()</button>
         <div class="status-line" id="hook-status">⏳ Awaiting onInit...</div>
