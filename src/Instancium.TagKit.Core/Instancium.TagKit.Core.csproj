@@ -11,15 +11,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Samples\TestTagHelper\TestTagHelper.css" />
-	  <None Remove="Samples\TestTagHelper\TestTagHelper.html" />
-	  <None Remove="Samples\TestTagHelper\TestTagHelper.js" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <EmbeddedResource Include="Samples\TestTagHelper\TestTagHelper.css" />
-	  <EmbeddedResource Include="Samples\TestTagHelper\TestTagHelper.html" />
-	  <EmbeddedResource Include="Samples\TestTagHelper\TestTagHelper.js" />
+	  <EmbeddedResource Include="Samples\HelloTagHelper\HelloTagHelper.css" />
+	  <EmbeddedResource Include="Samples\HelloTagHelper\HelloTagHelper.html" />
+	  <EmbeddedResource Include="Samples\HelloTagHelper\HelloTagHelper.js" />
 	  <EmbeddedResource Include="Runtime\EmbeddedResources\Inst.js" />
 	</ItemGroup>
 

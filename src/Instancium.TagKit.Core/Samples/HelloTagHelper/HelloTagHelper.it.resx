@@ -99,10 +99,10 @@
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
 	<data name="_Welcome_" xml:space="preserve">
-    <value>Ciao! Questo è un messaggio di prova da un TagHelper.</value>
+    <value>Ciao da Instancium!</value>
   </data>
 	<data name="_Intro_" xml:space="preserve">
-    <value>Questo è un messaggio di test da un componente.</value>
+    <value>Questa carta è renderizzata dinamicamente con stili e interattività.</value>
   </data>
 	<data name="_Now_" xml:space="preserve">
     <value>Ora attuale</value>

@@ -1,4 +1,5 @@
-﻿using Instancium.TagKit.Core.Samples.TestTagHelper;
+﻿
+using Instancium.TagKit.Core.Samples.HelloTagHelper;
 using Instancium.TagKit.Tests.Core.Infrastructure;
 
 namespace Instancium.TagKit.Tests.Core
@@ -10,7 +11,7 @@ namespace Instancium.TagKit.Tests.Core
         public async Task ShouldResolve_LocalizerAndLanguageCode_FromContextOverride()
         {
             var http = new FakeHttpContextAccessor("fr"); // ← will be ignored
-            var tagHelper = new TestTagHelper(http, FakeAppSettings.Instance, new FakeLocalizerFactory());
+            var tagHelper = new HelloTagHelper(http, FakeAppSettings.Instance, new FakeLocalizerFactory());
 
             var context = TagHelperTestUtils.CreateContext();
             context.Items["lang-code"] = "it"; // ← will be set

@@ -4,15 +4,15 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 
-namespace Instancium.TagKit.Core.Samples.TestTagHelper;
+namespace Instancium.TagKit.Core.Samples.HelloTagHelper;
 
 /// <summary>
 /// Demo tag helper that renders the current UTC time using an embedded HTML view.
 /// </summary>
-[HtmlTargetElement("test-tag")]
-public class TestTagHelper : TagHelperBase
+[HtmlTargetElement("inst-hello")]
+public class HelloTagHelper : TagHelperBase
 {
-    public TestTagHelper(
+    public HelloTagHelper(
         IHttpContextAccessor httpContextAccessor,
         IOptions<AppSettings> options,
         IStringLocalizerFactory localizerFactory)

@@ -1,6 +1,7 @@
 ﻿@page
 @model IndexModel
 @addTagHelper *, Instancium.TagKit.Core
+
 @{
     ViewData["Title"] = "Home page";
 }
@@ -21,7 +22,7 @@
         <h3>Rendered Component</h3>
         <div class="panel">
             <div id="test-tag-container">
-                <test-tag id="test-tag" lang-code="en"></test-tag>
+                <inst-hello id="test-tag" lang-code="en"></inst-hello>
             </div>
         </div>
 
@@ -39,7 +40,7 @@
             <strong>Rendered TagHelper Component (Default State):</strong>
             <div>
                 <code>
-                    @("<test-tag id='test-tag' lang-code='en'></test-tag>")
+                    @("<inst-hello id='test-tag' lang-code='en'></inst-hello>")
                 </code>
             </div>
         </div>
@@ -47,7 +48,7 @@
         <h3>What This Page Demonstrates</h3>
         <p>
             This page showcases <strong>real-time re-rendering of an Instancium component</strong> — without compilation, without client-side frameworks, directly in the browser.
-            The <code>&lt;test-tag&gt;</code> component is rendered on the server using Razor and can be reloaded with new parameters (such as language) via external triggers.
+            The <code>&lt;inst-hello&gt;</code> component is rendered on the server using Razor and can be reloaded with new parameters (such as language) via external triggers.
         </p>
 
         <h3>What Happens on Reload</h3>

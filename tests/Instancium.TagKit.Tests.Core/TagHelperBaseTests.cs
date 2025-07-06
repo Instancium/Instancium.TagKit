@@ -1,8 +1,6 @@
-﻿using Instancium.TagKit.Core.Config;
-using Instancium.TagKit.Core.Rendering;
-using Instancium.TagKit.Core.Samples.TestTagHelper;
+﻿using Instancium.TagKit.Core.Rendering;
+using Instancium.TagKit.Core.Samples.HelloTagHelper;
 using Instancium.TagKit.Tests.Core.Infrastructure;
-using Microsoft.Extensions.Options;
 using System.Reflection;
 
 namespace Instancium.TagKit.Tests.Core
@@ -13,9 +11,9 @@ namespace Instancium.TagKit.Tests.Core
         public async Task ShouldInline_CssAndJs_FromEmbeddedResources()
         {
             var builder = new TagViewBuilder { ComponentId = "x42" };
-            var html = await builder.ReadFromResourceAsync(typeof(TestTagHelper));
+            var html = await builder.ReadFromResourceAsync(typeof(HelloTagHelper));
 
-            Assert.Contains("<style>", html);
+            Assert.Contains("<style>", html);            
             Assert.Contains(".hello-card", html);
             Assert.Contains("<script>", html);
         }
@@ -50,7 +48,7 @@ namespace Instancium.TagKit.Tests.Core
         public async Task ShouldReturn_InnerMarkup_WithoutTagHelperWrapper()
         {
             var builder = new TagViewBuilder { ComponentId = "cmp-x" };
-            var html = await builder.ReadFromResourceAsync(typeof(TestTagHelper));
+            var html = await builder.ReadFromResourceAsync(typeof(HelloTagHelper));
 
             Assert.DoesNotContain("<tag-helper", html);
             Assert.Contains("hello-card", html); 
@@ -61,7 +59,7 @@ namespace Instancium.TagKit.Tests.Core
         {
             // Arrange
             var http = new FakeHttpContextAccessor("en");
-            var tagHelper = new TestTagHelper(http, FakeAppSettings.Instance, new FakeLocalizerFactory());
+            var tagHelper = new HelloTagHelper(http, FakeAppSettings.Instance, new FakeLocalizerFactory());
 
             var context = TagHelperTestUtils.CreateContext();
             var output = TagHelperTestUtils.CreateOutput("test-tag");
