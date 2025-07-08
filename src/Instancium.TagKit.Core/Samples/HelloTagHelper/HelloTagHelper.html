@@ -73,33 +73,56 @@
         document.addEventListener("DOMContentLoaded", triggerInitHook);
     </script>
 
+
+    <!-- Load the component logic -->
     <script src="./HelloTagHelper.js"></script>
 
+    <!-- Load the English localization dictionary -->
     <script src="./HelloTagHelper_i18n_en.js"></script>
+
     <script>
+        /**
+         * Recursively walks through all text nodes inside a given DOM root
+         * and replaces any @_Key_ markers with localized values from the dictionary.
+         *
+         * @param {Node} root - The root DOM node to localize (e.g. a component element)
+         * @param {Object} dict - A dictionary of localized strings (e.g. { "_Welcome_": "Hello" })
+         */
         function localizeTextNodes(root, dict) {
+            // Regular expression to match @_Key_ markers in text
             const pattern = /@(_[A-Za-z0-9]+_)/g;
-            console.log(dict);
+
+            /**
+             * Recursively walks the DOM tree and replaces matching text nodes.
+             * @param {Node} node - The current DOM node being processed
+             */
             function walk(node) {
                 if (node.nodeType === Node.TEXT_NODE) {
                     const original = node.textContent;
+
+                    // Replace all @_Key_ markers with corresponding values from the dictionary
                     const replaced = original.replace(pattern, (_, key) => dict[key] ?? `[${key}]`);
+
+                    // Only update the node if a replacement occurred
                     if (original !== replaced) {
                         node.textContent = replaced;
                     }
                 } else {
+                    // Recursively process all child nodes
                     node.childNodes.forEach(walk);
                 }
             }
 
+            // Start walking from the root node
             walk(root);
         }
 
+        // When the DOM is fully loaded, apply localization to the <tag-helper> component
         document.addEventListener("DOMContentLoaded", () => {
             const el = document.querySelector("tag-helper");
             localizeTextNodes(el, HelloTagHelper_i18n_en);
         });
-
     </script>
+
 </body>
 </html>
