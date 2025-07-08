@@ -2,47 +2,64 @@
 using Instancium.TagKit.Core.Rendering;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System.Globalization;
 using System.Reflection;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace Instancium.TagKit.Core
 {
     /// <summary>
-    /// Provides a base class for TagHelpers that render HTML from embedded resources,
-    /// with support for localization, language switching, and dynamic component registration.
+    /// Provides a foundation for TagHelpers that render HTML from embedded resources with optional localization and language switching.
     /// </summary>
-    public abstract class TagHelperBase : TagHelper
+    public abstract class TagHelperBaseOLD : TagHelper
     {
+        /// <summary>Accessor for the current HTTP context, used to retrieve headers for localization.</summary>
         protected readonly IHttpContextAccessor _httpContextAccessor;
+
+        /// <summary>Factory used to generate localizers for resolving resource keys.</summary>
+        protected readonly IStringLocalizerFactory _localizerFactory;
+
+        /// <summary>Localizer for the current TagHelper type.</summary>
+        protected IStringLocalizer? _localizer;
+
+        /// <summary>Configuration settings injected via AppSettings.</summary>
         protected readonly IAppSettings _settings;
 
+        private static readonly Regex LocalizationPattern = new(@"@(_[A-Za-z0-9]+_)", RegexOptions.Compiled);
+
         /// <summary>
-        /// Language code used for localization (e.g. "en", "fr", "de").
-        /// Can be set via the "lang-code" attribute or resolved from headers.
+        /// Optional language code (e.g., "en", "it") used to override culture detection.
         /// </summary>
         [HtmlAttributeName("lang-code")]
         public string LanguageCode { get; set; } = "en";
 
+
         /// <summary>
-        /// Unique ID for the rendered component. Can be overridden via the "id" attribute.
+        /// Unique HTML element identifier for the tag helper root. This ID is injected into the
+        /// rendered output as the element's DOM `id` and used for instance registration, external
+        /// scripting, and hook resolution (e.g., ComponentHooks[id]).
         /// </summary>
         [HtmlAttributeName("id")]
         public string ElementId { get; set; } = $"tag-{Guid.NewGuid():N}";
 
-        protected TagHelperBase(
+
+        /// <summary>
+        /// Initializes the TagHelper with culture resolution support and injected dependencies.
+        /// </summary>
+        protected TagHelperBaseOLD(
             IHttpContextAccessor httpContextAccessor,
-            IOptions<AppSettings> options)
+            IOptions<AppSettings> options,
+            IStringLocalizerFactory localizerFactory)
         {
             _httpContextAccessor = httpContextAccessor;
             _settings = options.Value;
+            _localizerFactory = localizerFactory;
         }
 
         /// <summary>
-        /// Main entry point for rendering the component.
-        /// Initializes culture, renders HTML, and registers the component.
+        /// Final sealed entry point for TagHelper rendering. Applies localization to generated HTML if necessary.
         /// </summary>
         public sealed override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
@@ -52,24 +69,28 @@ namespace Instancium.TagKit.Core
 
             if (!string.IsNullOrWhiteSpace(html))
             {
+                string localized = Localize(html);
                 OnComponentRendered();
-                output.Content.SetHtmlContent(html);
+                output.Content.SetHtmlContent(localized);
             }
         }
 
         /// <summary>
-        /// Sets the current thread culture based on the resolved language code.
+        /// Resolves culture from explicit attributes or request headers and initializes the localizer.
         /// </summary>
         protected virtual void InitializeCulture(TagHelperContext context)
         {
+
             LanguageCode = ResolveLanguageCode(context);
             var cultureInfo = new CultureInfo(LanguageCode);
             CultureInfo.CurrentCulture = cultureInfo;
             CultureInfo.CurrentUICulture = cultureInfo;
+
+            _localizer = _localizerFactory.Create(GetType());
         }
 
         /// <summary>
-        /// Resolves the language code from the "lang-code" attribute or request headers.
+        /// Determines the language code from context or HTTP request headers.
         /// </summary>
         protected virtual string ResolveLanguageCode(TagHelperContext context)
         {
@@ -82,7 +103,19 @@ namespace Instancium.TagKit.Core
         }
 
         /// <summary>
-        /// Reads the component's HTML template from an embedded resource.
+        /// Applies localization replacement using @(_Key_) syntax in the given HTML content.
+        /// </summary>
+        protected string Localize(string htmlContent)
+        {
+            return LocalizationPattern.Replace(htmlContent, match =>
+            {
+                string key = match.Groups[1].Value;
+                return _localizer?[key] ?? $"[MISSING {_localizer?.GetType().Name ?? "Localizer"}: {key}]";
+            });
+        }
+
+        /// <summary>
+        /// Loads the HTML resource associated with the current component (auto-resolves file name by type).
         /// </summary>
         protected async Task<string> ReadOwnHtmlAsync()
         {
@@ -90,45 +123,37 @@ namespace Instancium.TagKit.Core
             {
                 ComponentId = ElementId,
                 UseResourceLink = _settings.UseResourceLink,
-                LanguageCode = LanguageCode,
             };
-
             return await viewBuilder.ReadFromResourceAsync(GetHtmlResourceOwnerType());
         }
 
         /// <summary>
-        /// Returns the type that owns the embedded HTML resource.
-        /// Defaults to the current component type.
+        /// Returns the type that owns the embedded view resource. Can be overridden in derived classes.
         /// </summary>
-        protected virtual Type GetHtmlResourceOwnerType() => GetType();
+        protected virtual Type GetHtmlResourceOwnerType()
+        {
+            return GetType();
+        }
 
         /// <summary>
-        /// Must be implemented by derived components to render their HTML.
+        /// Must be implemented to generate raw HTML content to be localized and rendered.
         /// </summary>
         protected abstract Task<string> RenderHtmlAsync(TagHelperContext context, TagHelperOutput output);
 
-        /// <summary>
-        /// Optionally returns the component's CSS resource path or inline content.
-        /// </summary>
         protected virtual string? GetComponentCss() => null;
-
-        /// <summary>
-        /// Optionally returns the component's JavaScript resource path or inline content.
-        /// </summary>
         protected virtual string? GetComponentJs() => null;
 
-        /// <summary>
-        /// Resolves the tag name for the component, either from the HtmlTargetElement attribute or class name.
-        /// </summary>
+        private static string ToKebabCase(string input)
+        {
+            return Regex.Replace(input, "(?<!^)([A-Z])", "-$1").ToLowerInvariant();
+        }
+
         protected virtual string? ResolveTagName()
         {
             return GetType().GetCustomAttribute<HtmlTargetElementAttribute>()?.Tag
                    ?? ToKebabCase(GetType().Name.Replace("TagHelper", ""));
         }
 
-        /// <summary>
-        /// Registers the component in the runtime registry after rendering.
-        /// </summary>
         protected virtual void OnComponentRendered()
         {
             var tag = ResolveTagName();
@@ -136,12 +161,6 @@ namespace Instancium.TagKit.Core
                 ComponentRegistry.Register(tag, GetType());
         }
 
-        /// <summary>
-        /// Converts a PascalCase name to kebab-case.
-        /// </summary>
-        private static string ToKebabCase(string input)
-        {
-            return Regex.Replace(input, "(?<!^)([A-Z])", "-$1").ToLowerInvariant();
-        }
     }
 }
+

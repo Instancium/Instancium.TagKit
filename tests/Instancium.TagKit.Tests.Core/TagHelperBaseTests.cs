@@ -59,7 +59,7 @@ namespace Instancium.TagKit.Tests.Core
         {
             // Arrange
             var http = new FakeHttpContextAccessor("en");
-            var tagHelper = new HelloTagHelper(http, FakeAppSettings.Instance, new FakeLocalizerFactory());
+            var tagHelper = new HelloTagHelper(http, FakeAppSettings.Instance);
 
             var context = TagHelperTestUtils.CreateContext();
             var output = TagHelperTestUtils.CreateOutput("test-tag");

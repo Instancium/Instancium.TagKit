@@ -11,6 +11,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Samples\HelloTagHelper\HelloTagHelper_i18n_en.js" />
+	  <EmbeddedResource Include="Samples\HelloTagHelper\HelloTagHelper_i18n_it.js" />
 	  <EmbeddedResource Include="Samples\HelloTagHelper\HelloTagHelper.css" />
 	  <EmbeddedResource Include="Samples\HelloTagHelper\HelloTagHelper.html" />
 	  <EmbeddedResource Include="Samples\HelloTagHelper\HelloTagHelper.js" />

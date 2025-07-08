@@ -74,5 +74,31 @@
     </script>
 
     <script src="./HelloTagHelper.js"></script>
+
+    <script src="./HelloTagHelper_i18n_en.js"></script>
+    <script>
+        function localizeTextNodes(root, dict) {
+            console.log(dict);
+            function walk(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    const original = node.textContent;
+                    const replaced = original.replace(pattern, (_, key) => dict[key] ?? `[${key}]`);
+                    if (original !== replaced) {
+                        node.textContent = replaced;
+                    }
+                } else {
+                    node.childNodes.forEach(walk);
+                }
+            }
+
+            walk(root);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const el = document.querySelector("tag-helper");
+            localizeTextNodes(el, HelloTagHelper_i18n_en);
+        });
+
+    </script>
 </body>
 </html>

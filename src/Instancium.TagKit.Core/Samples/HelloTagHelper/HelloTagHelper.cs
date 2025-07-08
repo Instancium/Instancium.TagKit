@@ -14,9 +14,8 @@ public class HelloTagHelper : TagHelperBase
 {
     public HelloTagHelper(
         IHttpContextAccessor httpContextAccessor,
-        IOptions<AppSettings> options,
-        IStringLocalizerFactory localizerFactory)
-        : base(httpContextAccessor, options, localizerFactory)
+        IOptions<AppSettings> options)
+        : base(httpContextAccessor, options)
     {}
 
     /// <summary>

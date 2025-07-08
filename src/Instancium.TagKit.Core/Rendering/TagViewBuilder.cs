@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace Instancium.TagKit.Core.Rendering
@@ -26,6 +27,8 @@ namespace Instancium.TagKit.Core.Rendering
         /// </summary>
         public bool UseResourceLink { get; set; }
 
+        public string LanguageCode { get; set; } = "en";
+               
         /// <summary>
         /// Reads and composes a view from embedded HTML, CSS, and JS resources based on the tag helper type.
         /// </summary>
@@ -50,8 +53,9 @@ namespace Instancium.TagKit.Core.Rendering
 
             html = await EmbedCssAsync(html, baseName, baseNamespace, assembly);
             html = await EmbedJsAsync(html, baseName, baseNamespace, assembly);
-
+            html = await EmbedI18nAsync(html, baseName, baseNamespace, assembly);
             html = ExtractInnerTagHelperContent(html);
+
             return html;
         }
 
@@ -88,6 +92,61 @@ namespace Instancium.TagKit.Core.Rendering
 
             return styleTag + "\n" + html;
         }
+
+        /// <summary>
+        /// Attempts to localize the given HTML by loading a JS-based translation dictionary
+        /// from an embedded resource and replacing all @_Key_ markers with localized values.
+        /// </summary>
+        /// <param name="html">The original HTML content containing localization markers.</param>
+        /// <param name="baseName">The base name of the component (e.g. "HelloTagHelper").</param>
+        /// <param name="baseNamespace">The namespace where the embedded JS resource is located.</param>
+        /// <param name="assembly">The assembly containing the embedded resource.</param>
+        /// <returns>Localized HTML with all @_Key_ markers replaced, or the original HTML if localization fails.</returns>
+        private async Task<string> EmbedI18nAsync(string html, string baseName, string baseNamespace, Assembly assembly)
+        {
+            // Construct the expected resource path for the JS-based dictionary
+            var resourceFileName = $"{baseName}_i18n_{LanguageCode}.js";
+            var resourcePath = $"{baseNamespace}.{resourceFileName}";
+
+            // Attempt to read the embedded JS file (returns empty string if not found)
+            string js = await ReadEmbeddedFileAsync(assembly, resourcePath);
+            if (string.IsNullOrWhiteSpace(js))
+                return html; // Fallback: return original HTML if resource is missing
+
+            // Extract the JSON object from the JS file using regex
+            var match = Regex.Match(js, @"=\s*(\{[\s\S]*\})\s*;", RegexOptions.Compiled);
+            if (!match.Success)
+                return html; // Fallback: return original HTML if JSON block not found
+
+            var json = match.Groups[1].Value;
+            Dictionary<string, string>? translations = null;
+
+            try
+            {
+                // Attempt to deserialize the JSON into a dictionary
+                translations = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+            }
+            catch
+            {
+                return html; // Fallback: return original HTML if JSON is invalid
+            }
+
+            if (translations == null || translations.Count == 0)
+                return html; // Fallback: no translations available
+
+            // Replace all @_Key_ markers in the HTML with localized values
+            var pattern = new Regex(@"@(_[A-Za-z0-9]+_)", RegexOptions.Compiled);
+            var localized = pattern.Replace(html, match =>
+            {
+                var key = match.Groups[1].Value;
+                return translations.TryGetValue(key, out var value)
+                    ? value
+                    : $"[MISSING {key}]"; // Optional: mark missing keys visibly
+            });
+
+            return localized;
+        }
+
 
 
         /// <summary>
@@ -197,11 +256,20 @@ namespace Instancium.TagKit.Core.Rendering
 
         private async Task<string> ReadEmbeddedFileAsync(Assembly assembly, string resourcePath)
         {
-            using var stream = assembly.GetManifestResourceStream(resourcePath)
-                ?? throw new FileNotFoundException($"Resource not found: {resourcePath}");
+            try
+            {
+                using var stream = assembly.GetManifestResourceStream(resourcePath);
+                if (stream == null)
+                    return string.Empty;
 
-            using var reader = new StreamReader(stream);
-            return await reader.ReadToEndAsync();
+                using var reader = new StreamReader(stream);
+                return await reader.ReadToEndAsync();
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
+
     }
 }
