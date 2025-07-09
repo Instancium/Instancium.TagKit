@@ -32,7 +32,7 @@ An Instancium component may consist of:
 | `.html`		   | Markup template (plain HTML)     |
 | `.css`           | Optional styles, inline or external              |
 | `.js`            | Optional behavior, scoped per component          |
-| `.resx`          | Optional localization resources                  |
+| `_in18n_en.js`          | Optional localization resources                  |
 
 ### Key Advantages
 
@@ -91,7 +91,6 @@ This will:
 ```csharp
 	// Required services
 	builder.Services.AddHttpContextAccessor();
-	builder.Services.AddLocalization();
 	builder.Services.AddControllersWithViews();
 
 	// Optional configuration
