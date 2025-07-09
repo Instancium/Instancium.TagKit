@@ -40,14 +40,11 @@ app.UseRouting();
 // These middleware and route mappings are required for Instancium Core to operate correctly:
 app.UseStaticFiles();                        // Serves static assets (scripts, styles, etc.)
 app.UseMiddleware<TagKitHostMiddleware>();   // Enables server-side routing for TagKit component endpoints
-app.MapStaticAssets();                       // Maps /instancium/resources/* for script/style delivery
 app.MapDefaultControllerRoute();             // Enables default MVC routing for controllers and views
 
 
 app.UseAuthorization();
 
-app.MapRazorPages()
-   .WithStaticAssets();
-
+app.MapRazorPages();
 
 app.Run();
