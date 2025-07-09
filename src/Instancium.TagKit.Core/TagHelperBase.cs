@@ -3,9 +3,7 @@ using Instancium.TagKit.Core.Rendering;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Options;
-using System.Globalization;
 using System.Reflection;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace Instancium.TagKit.Core
@@ -63,9 +61,6 @@ namespace Instancium.TagKit.Core
         protected virtual void InitializeCulture(TagHelperContext context)
         {
             LanguageCode = ResolveLanguageCode(context);
-            var cultureInfo = new CultureInfo(LanguageCode);
-            CultureInfo.CurrentCulture = cultureInfo;
-            CultureInfo.CurrentUICulture = cultureInfo;
         }
 
         /// <summary>

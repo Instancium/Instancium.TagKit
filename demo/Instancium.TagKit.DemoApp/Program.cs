@@ -9,9 +9,7 @@ builder.Services.AddRazorPages()
 
 
 // These services are required for Instancium Core to function properly:
-builder.Services.AddRazorPages().AddViewLocalization();
 builder.Services.AddHttpContextAccessor();    // Enables access to HttpContext in components and services
-builder.Services.AddLocalization();           // Supports localization/internationalization of UI content
 builder.Services.AddControllersWithViews();   // Enables MVC + Razor view rendering for component endpoints
 
 // Bind configuration section if present
@@ -40,13 +38,6 @@ app.UseRouting();
 
 
 // These middleware and route mappings are required for Instancium Core to operate correctly:
-var supportedCultures = new[] { "en", "it" };
-var localizationOptions = new RequestLocalizationOptions()
-    .SetDefaultCulture("en")
-    .AddSupportedCultures(supportedCultures)
-    .AddSupportedUICultures(supportedCultures);
-
-app.UseRequestLocalization(localizationOptions);
 app.UseStaticFiles();                        // Serves static assets (scripts, styles, etc.)
 app.UseMiddleware<TagKitHostMiddleware>();   // Enables server-side routing for TagKit component endpoints
 app.MapStaticAssets();                       // Maps /instancium/resources/* for script/style delivery

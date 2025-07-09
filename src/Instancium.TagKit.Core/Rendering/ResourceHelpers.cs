@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Instancium.TagKit.Core.Rendering
+﻿namespace Instancium.TagKit.Core.Rendering
 {
     public static class ResourceHelpers
     {

@@ -1,7 +1,6 @@
 ﻿using Instancium.TagKit.Core.Config;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 
 namespace Instancium.TagKit.Core.Samples.HelloTagHelper;
@@ -16,7 +15,7 @@ public class HelloTagHelper : TagHelperBase
         IHttpContextAccessor httpContextAccessor,
         IOptions<AppSettings> options)
         : base(httpContextAccessor, options)
-    {}
+    { }
 
     /// <summary>
     /// Replaces the {{CurrentTime}} token in the embedded HTML template with the current time.

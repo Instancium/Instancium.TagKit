@@ -57,9 +57,10 @@ namespace Instancium.TagKit.Core.Controllers
             return new JsonResult(new
             {
                 html,
-                resources = new {
-                 scripts = manifest.ScriptHashes.ToArray(),
-                 styles = manifest.StyleHashes.ToArray(),
+                resources = new
+                {
+                    scripts = manifest.ScriptHashes.ToArray(),
+                    styles = manifest.StyleHashes.ToArray(),
                 },
             });
 

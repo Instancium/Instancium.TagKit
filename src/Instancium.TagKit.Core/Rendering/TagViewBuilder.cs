@@ -15,7 +15,7 @@ namespace Instancium.TagKit.Core.Rendering
         /// The unique ID used to scope DOM styles, hook API registration, and JS execution.
         /// This maps directly to the tag-helper's rendered HTML 'id' attribute.
         /// </summary>
-        public required string ComponentId {get;set;}
+        public required string ComponentId { get; set; }
 
         /// <summary>
         /// Determines whether CSS and JS resources should be linked as external URLs
@@ -28,7 +28,7 @@ namespace Instancium.TagKit.Core.Rendering
         public bool UseResourceLink { get; set; }
 
         public string LanguageCode { get; set; } = "en";
-               
+
         /// <summary>
         /// Reads and composes a view from embedded HTML, CSS, and JS resources based on the tag helper type.
         /// </summary>
