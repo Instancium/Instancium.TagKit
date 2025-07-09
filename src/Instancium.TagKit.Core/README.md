@@ -100,7 +100,6 @@ This will:
 	// Required middleware
 	app.UseStaticFiles();
 	app.UseMiddleware<TagKitHostMiddleware>();
-	app.MapStaticAssets();
 	app.MapDefaultControllerRoute();
 ```
 
