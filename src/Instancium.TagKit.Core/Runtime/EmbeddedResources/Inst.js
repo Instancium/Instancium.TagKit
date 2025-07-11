@@ -37,7 +37,7 @@ core.reload = async function (selector, options = {}, mount = true) {
 
         // Load external styles and scripts
         for (const hash of resources?.styles ?? []) utils.loadStyle(hash);
-        for (const hash of resources?.scripts ?? []) utils.loadScript(hash, true);
+        for (const hash of resources?.scripts ?? []) utils.loadScriptStable(hash);
 
         // Optional lifecycle hook
         el.api?.onInit?.();
@@ -46,27 +46,29 @@ core.reload = async function (selector, options = {}, mount = true) {
     return el;
 };
 
-/**
- * Dynamically loads a JavaScript file by hash.
- * Prevents duplicates unless `force` is true.
- */
-utils.loadScript = function (hash, force = false) {
-    const baseSrc = `/instancium/resources/script-${hash}.js`;
-    const existing = [...document.scripts].find(s => s.src.split("?")[0] === location.origin + baseSrc);
 
-    if (existing && !force) {
-        console.log("⚪ Script already present, skipping:", baseSrc);
-        return;
+/**
+ * Safely reloads a script by hash without polluting Sources panel.
+ * Removes previous instance, inserts with stable URL.
+ * @param {string} hash - Script identifier hash (already versioned).
+ */
+utils.loadScriptStable = function (hash) {
+    const baseSrc = `/instancium/resources/script-${hash}.js`;
+    const absoluteSrc = location.origin + baseSrc;
+
+    const existing = [...document.scripts].find(s => s.src === absoluteSrc);
+    if (existing) {
+        existing.remove(); // ⛔️ Explicit cleanup
+        console.log("🧹 Removed old script:", baseSrc);
     }
 
-    if (existing) existing.remove();
-
-    const s = document.createElement("script");
-    s.src = baseSrc + "?ts=" + Date.now();
-    s.defer = true;
-    document.head.appendChild(s);
-    console.log("✅ Script inserted:", s.src);
+    const script = document.createElement("script");
+    script.src = baseSrc;
+    script.defer = true;
+    document.head.appendChild(script);
+    console.log("✅ Inserted stable script:", baseSrc);
 };
+
 
 /**
  * Dynamically loads a CSS file by hash.
@@ -96,3 +98,26 @@ if (!window.inst?.reload) {
     window.inst.loadScript = utils.loadScript;
     window.inst.loadStyle = utils.loadStyle;
 }
+
+
+/**
+* Deprecated in favor of `loadScriptStable`.
+* Use only in dev or non-versioned script scenarios.
+*/
+utils._legacy.loadScript = function (hash, force = false) {
+    const baseSrc = `/instancium/resources/script-${hash}.js`;
+    const existing = [...document.scripts].find(s => s.src.split("?")[0] === location.origin + baseSrc);
+
+    if (existing && !force) {
+        console.log("⚪ Script already present, skipping:", baseSrc);
+        return;
+    }
+
+    if (existing) existing.remove();
+
+    const s = document.createElement("script");
+    s.src = baseSrc + "?ts=" + Date.now();
+    s.defer = true;
+    document.head.appendChild(s);
+    console.log("✅ Script inserted:", s.src);
+};

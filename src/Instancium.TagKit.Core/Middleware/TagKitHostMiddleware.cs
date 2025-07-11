@@ -85,7 +85,7 @@ namespace Instancium.TagKit.Core.Middleware
         {
             var sb = new StringBuilder();
             foreach (var hash in ResourceManifest.Current.StyleHashes)
-                sb.AppendLine($"<link href=\"/instancium/resources/style-{hash}.css?v={hash}\" rel=\"stylesheet\">");
+                sb.AppendLine($"<link href=\"/instancium/resources/style-{hash}.css\" rel=\"stylesheet\">");
 
             return sb.ToString();
         }
@@ -97,7 +97,7 @@ namespace Instancium.TagKit.Core.Middleware
             sb.AppendLine("<script src=\"/instancium/resources/inst.js?v=1\" defer></script>");
 
             foreach (var hash in ResourceManifest.Current.ScriptHashes)
-                sb.AppendLine($"<script src=\"/instancium/resources/script-{hash}.js?v={hash}\" defer></script>");
+                sb.AppendLine($"<script src=\"/instancium/resources/script-{hash}.js\" defer></script>");
 
             return sb.ToString();
         }

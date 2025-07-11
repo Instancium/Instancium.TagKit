@@ -17,7 +17,7 @@ namespace Instancium.TagKit.Core.Runtime
             tags.AppendLine("<script src=\"/instancium/resources/inst.js?v=1\" defer></script>");
 
             foreach (var hash in manifest.ScriptHashes)
-                tags.AppendLine($"<script src=\"/instancium/resources/script-{hash}.js?v={hash}\" defer></script>");
+                tags.AppendLine($"<script src=\"/instancium/resources/script-{hash}.js\" defer></script>");
 
             return new HtmlContentViewComponentResult(new HtmlString(tags.ToString()));
         }
