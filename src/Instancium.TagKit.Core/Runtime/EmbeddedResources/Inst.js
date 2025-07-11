@@ -99,25 +99,3 @@ if (!window.inst?.reload) {
     window.inst.loadStyle = utils.loadStyle;
 }
 
-
-/**
-* Deprecated in favor of `loadScriptStable`.
-* Use only in dev or non-versioned script scenarios.
-*/
-utils._legacy.loadScript = function (hash, force = false) {
-    const baseSrc = `/instancium/resources/script-${hash}.js`;
-    const existing = [...document.scripts].find(s => s.src.split("?")[0] === location.origin + baseSrc);
-
-    if (existing && !force) {
-        console.log("⚪ Script already present, skipping:", baseSrc);
-        return;
-    }
-
-    if (existing) existing.remove();
-
-    const s = document.createElement("script");
-    s.src = baseSrc + "?ts=" + Date.now();
-    s.defer = true;
-    document.head.appendChild(s);
-    console.log("✅ Script inserted:", s.src);
-};
