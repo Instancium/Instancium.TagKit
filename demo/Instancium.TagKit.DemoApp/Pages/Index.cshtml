@@ -65,10 +65,15 @@
 
 <script>
         async function reloadTag(lang) {
+
+            const el = document.querySelector("#test-tag");
+            el.api?.detach?.();
             await instancium.core.reload("#test-tag", { lang });
 
             const container = document.getElementById("test-tag-container");
             document.getElementById("htmlPreview").textContent = container.innerHTML;
+
+            instancium.utils.auditMemory();
         }
 
         // Init preview on load

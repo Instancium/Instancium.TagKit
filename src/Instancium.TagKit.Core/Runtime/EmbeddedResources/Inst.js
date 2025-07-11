@@ -99,3 +99,48 @@ if (!window.inst?.reload) {
     window.inst.loadStyle = utils.loadStyle;
 }
 
+
+utils.auditMemory = function () {
+    const summary = {
+        detached: [],   // Tracks orphaned DOM nodes not attached to document.body
+        listeners: [],  // Tracks registered event listeners on the target component
+        globals: [],    // Tracks global pollution in the window scope
+    };
+
+    // 🔍 Detect detached DOM nodes (not part of the live document tree)
+    const all = performance?.getEntriesByType?.("resource") ?? [];
+    summary.detached = [...document.querySelectorAll("*")].filter(el => {
+        return !document.body.contains(el) && el.tagName !== "SCRIPT";
+    });
+
+    // 👂 Detect event listeners (DevTools API only, may require inspection mode)
+    try {
+        const el = document.querySelector("tag-helper");
+        const events = getEventListeners?.(el) ?? {};
+        summary.listeners = Object.entries(events).map(([type, handlers]) => ({
+            type,
+            count: handlers.length,
+        }));
+    } catch {
+        summary.listeners.push({ type: "DevToolsOnly", count: "N/A" });
+    }
+
+    // 🌍 Detect global pollution — variables leaking into window scope
+    for (const key in window) {
+        if (key.startsWith("inst_") || key.includes("tag")) {
+            summary.globals.push(key);
+        }
+    }
+
+
+    // 📊 Output audit summary to console
+    console.group("🧠 TagKit Memory Audit");
+    console.log("📦 Detached DOM Elements:", summary.detached.length);
+    console.log("🎧 Active Event Listeners:", summary.listeners);
+    console.log("🌍 Global Variables:", summary.globals);
+    console.groupEnd();
+
+
+    return summary;
+};
+
