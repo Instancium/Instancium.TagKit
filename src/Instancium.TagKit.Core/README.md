@@ -112,5 +112,6 @@ Then add `inst.reload(...)` and experience how a living architecture thrives —
 
 If you value control, predictability, and clarity — welcome home.
 
-📄 License MIT © 2025 Instancian Contributors  
+## 📄 License  
+MIT © 2025 Instancian Contributors  
 ✒️ [Authorship statement](https://github.com/Instancium/.github/blob/main/profile/Authorship.md)
