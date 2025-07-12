@@ -3,7 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <title>Test TagHelper – Instancium JS Scoped Demo</title>
+
+    <!-- Component-specific stylesheet; auto-linked based on naming convention.
+         This file is considered part of the HelloTagHelper component and will be
+         included by the protocol either as inline or external, depending on configuration. -->
     <link href="./HelloTagHelper.css" rel="stylesheet" />
+
     <style>
         .status-line {
             font-weight: bold;
@@ -29,6 +34,7 @@
     </style>
 </head>
 <body>
+
     <!-- 💡 External UI (can be moved to layout or external demo page) -->
     <section class="test-panel">
         <h2>🧪 External Interaction (Development Only)</h2>
@@ -45,7 +51,7 @@
         <div class="status-line" id="hook-status">⏳ Awaiting onInit...</div>
     </section>
 
-    <!-- 🧩 Razor-rendered component -->
+    <!-- Component body begins here — only content inside <tag-helper> is treated as reloadable -->
     <tag-helper>
         <div class="hello-card">
             <h2>@_Welcome_</h2>
@@ -74,10 +80,13 @@
     </script>
 
 
-    <!-- Load the component logic -->
+    <!-- Component-specific script; auto-linked via naming convention.
+         This JavaScript file is part of the HelloTagHelper component and will be
+         loaded by the protocol either inline or externally, depending on configuration. -->
     <script src="./HelloTagHelper.js"></script>
 
-    <!-- Load the English localization dictionary -->
+
+    <!-- Load the English localization dictionary for testing without compilation -->
     <script src="./HelloTagHelper_i18n_en.js"></script>
 
     <script>
