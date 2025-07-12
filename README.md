@@ -49,7 +49,7 @@ Instancium chooses simplicity and direction over convenience and ambiguity.
 | Folder | Purpose |
 |--------|---------|
 | [src/Instancium.TagKit.Core](./src/Instancium.TagKit.Core) | Minimal runtime with reload protocol and resource hooks |
-| [src/DemoApp](./src/DemoApp) | Example app: TagHelpers, reload flows, and UI scaffolding |
+| [demo/DemoApp](./demo/Instancium.TagKit.DemoApp) | Example app: TagHelpers, reload flows, and UI scaffolding |
 | [tests](./tests) | Runtime and component reload tests |
 
 ---
