@@ -1,5 +1,9 @@
 ﻿# Instancium TagKit Core
 
+This library is a core component of the **Instancium Protocol**,  
+an architecture-first initiative for AI-native, structure-aware systems.  
+Learn more in the [Protocol Manifesto](https://github.com/Instancium/.github/blob/main/profile/MANIFESTO.md).
+
 **Render protocol, not framework.**  
 Instancium Core is a lightweight, render-agnostic runtime designed for component-based systems.  
 It embraces server-side rendering and declarative rehydration — with no frontend frameworks, no ceremony.
