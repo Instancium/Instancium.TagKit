@@ -75,6 +75,5 @@ If your organization finds value in adopting Instancium for clean, minimal, fram
 - 🌱 Join the Guild — help shape the architectural core and steward its direction
 - 📬 Get in touch: support@protonmail.com 🧭 Learn more: instancium.com (soon)
 
-📄 License
-Apache 2.0 © 2025 Instancium Contributors
-
+📄 License MIT © 2025 Instancium Contributors  
+✒️ [Authorship statement](https://github.com/Instancium/.github/blob/main/profile/Authorship.md)
