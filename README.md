@@ -2,6 +2,10 @@
 
 **A communication protocol for components — not just another UI library.**
 
+This library is a core component of the **Instancium Protocol**,  
+an architecture-first initiative for AI-native, structure-aware systems.  
+Learn more in the [Protocol Manifesto](https://github.com/Instancium/.github/blob/main/profile/MANIFESTO.md).
+
 Instancium.TagKit is a runtime and resource contract for server-rendered components. Built for predictable reload, seamless integration, and absolute autonomy.
 
 ---
