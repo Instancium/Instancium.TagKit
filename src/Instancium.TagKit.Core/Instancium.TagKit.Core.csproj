@@ -1,14 +1,47 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<!-- Basic project properties -->
 	<PropertyGroup>
+		<!-- Target latest .NET version -->
 		<TargetFramework>net8.0</TargetFramework>
+
+		<!-- Enable implicit global usings and nullable reference types -->
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+
+		<!-- Enable automatic package creation on build -->
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<RootNamespace>Instancium.TagKit.Core</RootNamespace>
+		
+		<!-- Default package metadata -->
 		<PackageId>Instancium.TagKit.Core</PackageId>
-		<Description>Minimalist, localizable TagHelper framework with embedded resource support.</Description>
+		<Version>1.0.10</Version>
+
+		<Authors>Instancian</Authors>
+		<Company>Instancium</Company>
+		<Description>Instancium.TagKit is a runtime and resource contract for server-rendered components.</Description>
+		<PackageTags>TagHelpers;Components;UI;Razor</PackageTags>
+		<RepositoryUrl>https://github.com/Instancium/Instancium.TagKit</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
+
+	<!-- Debug configuration settings -->
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<IncludeSymbols>true</IncludeSymbols>
+		<!-- Include debug symbols in package -->
+		<IncludeSource>true</IncludeSource>
+		<!-- Include source files in package -->
+		<DebugType>embedded</DebugType>
+		<!-- Embed PDB into DLL -->
+	</PropertyGroup>
+
+	<!-- Release configuration settings -->
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<DebugType>none</DebugType>
+		<!-- No debug info in release build -->
+	</PropertyGroup>
+
 
 	<ItemGroup>
 	  <EmbeddedResource Include="Samples\HelloTagHelper\HelloTagHelper_i18n_en.js" />
