@@ -49,7 +49,7 @@ Instancium chooses simplicity and direction over convenience and ambiguity.
 | Folder | Purpose |
 |--------|---------|
 | [src/Instancium.TagKit.Core](./src/Instancium.TagKit.Core) | Minimal runtime with reload protocol and resource hooks |
-| [src/DemoApp](./src/DemoApp) | Example app: TagHelpers, reload flows, and UI scaffolding |
+| [demo/DemoApp](./demo/Instancium.TagKit.DemoApp) | Example app: TagHelpers, reload flows, and UI scaffolding |
 | [tests](./tests) | Runtime and component reload tests |
 
 ---
@@ -72,7 +72,8 @@ If your organization finds value in adopting Instancium for clean, minimal, fram
 - 💼 Use it in production — and share feedback to help evolve the protocol
 - 🤝 Sponsor development — support continuous, focused, transparent work
 - 🌱 Join the Guild — help shape the architectural core and steward its direction
-- 📬 Get in touch: support@protonmail.com 🧭 Learn more: instancium.com (soon)
+- 📬 Get in touch: support@protonmail.com
+- 🧭 Learn more: instancium.com (soon)
 
 ## 📄 License  
 MIT © 2025 Instancian Contributors  

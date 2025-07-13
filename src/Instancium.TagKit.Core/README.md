@@ -110,7 +110,7 @@ This will:
 Start by building a simple SSR component.  
 Then add `inst.reload(...)` and experience how a living architecture thrives — without a single line of frontend framework.  
 
-💡 To see how to integrate and use components in practice, check out the companion demo project: [src/Instancium.TagKit.Core](./src/Instancium.TagKit.Core)  
+💡 To see how to integrate and use components in practice, check out the companion demo project: [Instancium.TagKit.DemoApp](/demo/Instancium.TagKit.DemoApp)  
 
 If you value control, predictability, and clarity — welcome home.
 
