@@ -72,7 +72,8 @@ If your organization finds value in adopting Instancium for clean, minimal, fram
 - 💼 Use it in production — and share feedback to help evolve the protocol
 - 🤝 Sponsor development — support continuous, focused, transparent work
 - 🌱 Join the Guild — help shape the architectural core and steward its direction
-- 📬 Get in touch: support@protonmail.com 🧭 Learn more: instancium.com (soon)
+- 📬 Get in touch: support@protonmail.com
+- 🧭 Learn more: instancium.com (soon)
 
 ## 📄 License  
 MIT © 2025 Instancian Contributors  
