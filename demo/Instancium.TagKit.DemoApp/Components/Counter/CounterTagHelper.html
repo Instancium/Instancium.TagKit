@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Counter Demo Page</title>
+    <link href="../../wwwroot/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+
+    <tag-helper>
+        <div class="card p-3 shadow-sm">
+            <h4 class="mb-3 text-primary">🔢 Counter Component</h4>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Sync Mode:</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="syncMode" id="syncClient" value="client" checked>
+                    <label class="form-check-label" for="syncClient">Client Mode (+1)</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="syncMode" id="syncServer" value="server">
+                    <label class="form-check-label" for="syncServer">Server Mode (+10)</label>
+                </div>
+            </div>
+
+            <input type="hidden" value="{counter_value}" />
+            <div class="counter-value fs-3 mb-3 text-center text-success fw-semibold">{counter_display}</div>
+
+            <button type="button" class="btn btn-lg btn-primary w-100">
+                🚀 Click to Count
+            </button>
+        </div>
+    </tag-helper>
+
+    <script src="./CounterTagHelper.js"></script>
+    <script src="../../wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

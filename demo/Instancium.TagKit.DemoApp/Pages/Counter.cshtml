@@ -1,0 +1,39 @@
+﻿@page
+@model Instancium.TagKit.DemoApp.Pages.CounterModel
+@addTagHelper *, Instancium.TagKit.DemoApp
+
+@{
+    var counter = 5;
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-dark">🎯 Counter Component Demo</h2>
+
+    <p class="lead">
+        This page demonstrates the <strong>Counter</strong> component, implemented as a Razor TagHelper
+        within the Instancium framework. It supports both <em>server-initialized state</em> and
+        <em>client-side reactive behavior</em>, allowing the counter to update dynamically when the button is clicked.
+    </p>
+
+    <p>
+        Below is a component bound to a Razor variable <code>@counter</code>:
+    </p>
+
+    <div class="p-4">
+        <counter value="@counter" endpoint="/api/counter/update"></counter>
+    </div>
+
+    <hr class="my-4" />
+
+    <h4>🔍 How It Works</h4>
+    <ul>
+        <li>Clicking the button increments the counter value</li>
+        <li>You can choose between <strong>Client Mode</strong> (+1 per click) and <strong>Server Mode</strong> (+10 via backend logic)</li>
+        <li>The component receives parameters like <code>value</code> and <code>endpoint</code> via Razor</li>
+    </ul>
+
+    <p>
+        Thanks to Instancium's architecture, the component remains testable in both <em>pure HTML</em> and <em>compiled Razor</em>,
+        offering full compatibility across client-side and server-side scenarios.
+    </p>
+</div>
