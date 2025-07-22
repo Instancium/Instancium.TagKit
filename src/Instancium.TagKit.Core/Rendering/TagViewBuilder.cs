@@ -158,29 +158,70 @@ namespace Instancium.TagKit.Core.Rendering
         /// <returns>Scoped CSS unless opt-out directive is present.</returns>
         private string ScopeCssToComponent(string css)
         {
-            // Skip scoping if opt-out directive is present
             if (css.Contains("/* @no-scope */"))
                 return css;
 
-            var lines = css.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            var lines = css.Split('\n');
             var scoped = new StringBuilder();
+            var insideAtBlock = false;
+            var indentLevel = 0;
 
-            foreach (var line in lines)
+            foreach (var rawLine in lines)
             {
-                if (line.Trim().StartsWith("/*"))
+                var line = rawLine.Trim();
+
+                // Track block depth to handle @media properly
+                if (line.StartsWith("@media") || line.StartsWith("@supports"))
                 {
-                    scoped.AppendLine(line);
+                    insideAtBlock = true;
+                    indentLevel++;
+                    scoped.AppendLine(rawLine); // leave it untouched
                     continue;
                 }
 
-                if (line.Contains('{'))
-                    scoped.AppendLine($"#{ComponentId} {line}");
+                if (line.Contains("{"))
+                {
+                    indentLevel++;
+                }
+
+                if (line.Contains("}"))
+                {
+                    indentLevel--;
+                    if (indentLevel == 0)
+                        insideAtBlock = false;
+                }
+
+                // Skip empty, comment, or non-selector lines
+                if (string.IsNullOrWhiteSpace(line) || line.StartsWith("/*") || line.StartsWith("*") || line.StartsWith("@"))
+                {
+                    scoped.AppendLine(rawLine);
+                    continue;
+                }
+
+                // If line likely contains a CSS selector
+                if (line.Contains("{"))
+                {
+                    var index = rawLine.IndexOf('{');
+                    var beforeBrace = rawLine.Substring(0, index).Trim();
+                    var afterBrace = rawLine.Substring(index);
+
+                    // Scope each selector in a group, e.g., `.a, .b` -> `#id .a, #id .b`
+                    var scopedSelectors = string.Join(", ",
+                        beforeBrace.Split(',')
+                            .Select(sel => $"#{ComponentId} {sel.Trim()}"));
+
+                    scoped.AppendLine($"{scopedSelectors}{afterBrace}");
+                }
                 else
-                    scoped.AppendLine(line);
+                {
+                    scoped.AppendLine(rawLine);
+                }
             }
 
             return scoped.ToString();
         }
+
+
 
         /// <summary>
         /// Inlines the JavaScript logic for the component by locating a reference like
