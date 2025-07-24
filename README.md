@@ -7,20 +7,19 @@ This library is a core component of the **Instancium Protocol**,
 an architecture-first initiative for AI-native, structure-aware systems.  
 Learn more in the [Protocol Manifesto](https://github.com/Instancium/.github/blob/main/profile/MANIFESTO.md).
 
----
+## 🌌 Authorship Statement & Usage Philosophy
 
-## 🌌 Philosophy
+Instancium.TagKit is not designed for building universal component libraries. It exists to help you quickly create exactly what your project needs, without overhead or abstraction.
 
-Instancium does not introduce a runtime. It reveals one.
+With Instancium.TagKit, you can:
 
-- 🧠 Protocol over framework  
-- ✨ Predictability over magic  
-- 📦 Components as autonomous units of interface — not frontend artifacts  
-- 🤝 Server-first mindset with optional client-side activation
-- ⛔ **No frameworks. No ceremony. No implicit runtime.**  
-- 🕊️ **Stateless by default. Predictable by protocol. Never opaque.**
+- Prompt an AI (or write manually) to generate HTML structure, JS behavior, and CSS styling
+- Instantly test your component — no compilation, no Razor, no hidden layers
+- Define server-side logic cleanly in C# — decoupled and explicit
+- Use it as a TagHelper — an autonomous, self-contained unit of interface
 
-Components describe. Protocols coordinate. You remain in control.
+Each component becomes a testable, portable, and predictable UI block.
+Instancium.TagKit is not a framework — it's a protocol that enables you to build your product, not another abstraction layer.
 
 ### Plain HTML Preserves Clarity and Autonomy
 
