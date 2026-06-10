@@ -1,79 +1,55 @@
-# Instancium.TagKit
+# Instancium.TagKit (Archived / Concept)
 
-**A communication protocol for components — not just another UI library.**
-Instancium.TagKit is a runtime and resource contract for server-rendered components. Built for predictable reload, seamless integration, and absolute autonomy.  
+**Instancium.TagKit** is an experimental server-side component engine for ASP.NET Core, engineered with a single objective: **to make UI code generation by AI models (LLMs) highly reliable and predictable.** 
 
-This library is a core component of the **Instancium Protocol**,  
-an architecture-first initiative for AI-native, structure-aware systems.  
-Learn more in the [Protocol Manifesto](https://github.com/Instancium/.github/blob/main/profile/MANIFESTO.md).
+The project completely eliminates the Razor view engine from the rendering pipeline, replacing it with a strict "pure HTML + pure C#" contract.
 
-## 🌌 Authorship Statement & Usage Philosophy
+---
+
+## 🎯 The Purpose
+
+Modern LLMs (Claude, GPT, Cursor) are exceptional at generating standard frontend code but frequently introduce syntax errors when dealing with Razor directives (`.cshtml`). They struggle with heavy compilation contexts and often break the .NET build when trying to generate inline server logic like `@if` or `@foreach`.
+
+TagKit was built to solve this problem by enforcing a strict separation of concerns:
+
+* **Ideal AI Context:** Components use pure, valid HTML entirely free of server-side directives. An AI can safely generate, update, and validate this markup autonomously using standard frontend tools.
+* **Backend Safety:** All server-side logic is decoupled into isolated C# classes. The AI can rewrite the interface without risking breaking core system architecture or state mutations.
+* **Instant Feedback Loop:** Changes to HTML templates apply instantly (**Zero-Compilation Hot-Reload**). This is crucial for autonomous AI agents that iteratively refine the UI in real time.
+
+As a result, each UI component becomes an isolated, predictable, and safe building block that an AI can generate and maintain without human friction.
+
+---
+
+## ⚙️ Key Features
 
 Instancium.TagKit is not designed for building universal component libraries. It exists to help you quickly create exactly what your project needs, without overhead or abstraction.
 
 With Instancium.TagKit, you can:
+* **Prompt an AI** (or write manually) to generate HTML structure, JS behavior, and CSS styling.
+* **Instantly test your component** — no compilation, no Razor, no hidden layers.
+* **Define server-side logic cleanly in C#** — decoupled and explicit.
+* **Use it as a TagHelper** — an autonomous, self-contained unit of interface.
 
-- Prompt an AI (or write manually) to generate HTML structure, JS behavior, and CSS styling
-- Instantly test your component — no compilation, no Razor, no hidden layers
-- Define server-side logic cleanly in C# — decoupled and explicit
-- Use it as a TagHelper — an autonomous, self-contained unit of interface
-
-Each component becomes a testable, portable, and predictable UI block.
-Instancium.TagKit is not a framework — it's a protocol that enables you to build your product, not another abstraction layer.
-
-### Plain HTML Preserves Clarity and Autonomy
-
-By using `.html` templates without server directives:
-
-- You get true separation of concerns — code in `.cs`, structure in `.html`
-- Components don’t require compilation — edit and reload instantly
-- Frontend work can happen in any environment or tool (even outside .NET)
-- Markup becomes portable, testable, and safe for reuse
-
-### Why No Razor in Markup Template (plain HTML)?
-
-Instancium components intentionally avoid Razor (`.cshtml`) templates — and this is a core part of the protocol.
-
-Allowing `.cshtml` in components opens the door to:
-
-- Server-side logic inside markup (`@if`, `@foreach`, etc.)
-- State mutations and service calls within HTML structure
-- Tightly coupled UI that depends on compilation and backend context
-
-This undermines the very purpose of components as declarative, self-contained units.  
-Instancium chooses simplicity and direction over convenience and ambiguity.
+---
 
 ## 🧱 Project Structure
 
 | Folder | Purpose |
-|--------|---------|
-| [src/Instancium.TagKit.Core](./src/Instancium.TagKit.Core) | Minimal runtime with reload protocol and resource hooks |
-| [demo/DemoApp](./demo/Instancium.TagKit.DemoApp) | Example app: TagHelpers, reload flows, and UI scaffolding |
-| [tests](./tests) | Runtime and component reload tests |
+| :--- | :--- |
+| **`src/Instancium.TagKit.Core`** | Minimal runtime with reload protocol and resource hooks. |
+| **`demo/DemoApp`** | Example app: TagHelpers, reload flows, and UI scaffolding (including HTMX/Alpine.js context). |
+| **`tests`** | Runtime and component reload tests. |
 
 ---
 
-## 🤝 Contributing
+## 🛑 Project Status: Frozen
 
-Instancium welcomes contributions that align with its vision: transparency, autonomy, and composability.
+This project is now a **conceptual archive**. Active development has been suspended. 
 
-While a formal `CONTRIBUTING.md` is coming soon, feel free to explore the `Core`, suggest extensions, or raise issues.
+The source code and the underlying architecture are shared "as is" to document this approach. Feel free to use the code, fork the concept, or adapt these principles for your own AI-driven development workflows.
 
-👁️‍🗨️ **The Guild**  
-Instancium maintains its architectural rhythm through a growing guild — a collective of engineers, philosophers, and designers who care about the clarity and direction of the protocol.  
-If you seek to contribute not just code, but meaning — [consider joining](https://instancium.com/#guild).
+---
 
-## 🏢 Supporting the Project
-Instancium is more than a runtime — it's a philosophy of transparent, declarative architecture.
+## 📄 License
 
-If your organization finds value in adopting Instancium for clean, minimal, framework-free UI infrastructure, please consider supporting the project:
-
-- 💼 Use it in production — and share feedback to help evolve the protocol
-- 🤝 Sponsor development — support continuous, focused, transparent work
-- 🌱 Join the Guild — help shape the architectural core and steward its direction
-- 📬 Get in touch: support@protonmail.com
-- 🧭 Learn more: instancium.com (soon)
-
-## 📄 License  
-MIT © 2025 Instancian Contributors  
-✒️ [Authorship statement](https://github.com/Instancium/.github/blob/main/profile/Authorship.md)
+MIT © 2025 Instancian Contributors
